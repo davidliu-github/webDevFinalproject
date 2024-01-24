@@ -1,0 +1,171 @@
+<html>
+    <head>
+        <title>Lab 1</title>
+    </head>
+    <body>
+        <a href ="../../index.html">Back Home</a>
+        <h1>Assignment 1 - All about HTML</h1>
+        <h2>Forms</h2>
+        <form>
+            <!-- input is a type text -->
+            <!-- placeholder give suggestion of example for field -->
+            <!-- title makes it hoverable -->
+            <!-- value is placeholder but solid -->
+            <!-- readonly makes it unable to type-->
+            <!-- type password- hidden -->
+            <!-- type number, only digits -->
+            <!-- name in form- interprets the clicking of button as submitting the form -->
+            <!-- takes all the names of the field, parses them, and creates query string -->
+
+            Username: 
+            <input 
+                name="Username"
+                type="type" 
+                title = "Please enter your username" 
+                placeholder ="jdoe"
+                value ="jason"
+                readonly/>
+        </br>
+            Password:
+            <input 
+                type="password" 
+            />
+        </br>
+            Salary:
+            <input 
+                type="number" 
+                value="1000"
+                max="100000"
+                min="100"
+            />
+        </br>
+            Date:
+            <!-- format is always 4 digits for year -->
+            <!-- to format, year month date -->
+            <input 
+                type="date"
+                value="2023-10-01"
+                min="2023-10-01"
+                max="2023-10-23"
+            />
+        </br>
+            Buttons:
+            <!-- by default type submit- refreshes the page -->
+            <!-- disable behavior by type = "button" -->
+            <button>
+                click me
+            </button>
+            <button type="reset">
+                Reset
+            </button>
+            <button type="button">
+                Button
+            </button>
+            <input  type="text"
+       placeholder="hint"
+       title="tooltip"
+       value="COMEDY"/>
+            <!-- div used to add block layout -->
+            <!-- need to give them same name so that radio button doesn't keep select -->
+            <!-- if you give value, it will send that in the query string -->
+            <!-- checked - by default selected -->
+            <!-- if you want so that if u click on the label, it will also click on the input field, id to match with for -->
+            <h2>Radio Buttons</h2>
+            <h4>Favorite Books:</h4>
+            <input id = "dune" checked type="radio" name ="fav-book" value ="Dune" />
+            <label for ="dune">Dune </label><br>
+
+            <div><input type="radio" name ="fav-book"/>Lord of the Rings</div>
+            <div><input type="radio" name ="fav-book"/>Harry Potter</div>
+            
+            <!-- give value to send out to server in query string -->
+            <!-- checked does same as before -->
+            <h4>Favorite Genre:</h4>
+            <input type="checkbox" name ="fav-book" value = "action"/>Action 
+            <input type="checkbox" name ="fav-book" value = "comd"/>Comedy 
+            <input type="checkbox" name ="fav-book"/>Romance 
+            <input type="checkbox" name ="fav-book"/>Horror
+
+            <!-- can also use dropdowns instead of radio buttons -->
+            <h4>Favorite Books</h4>
+            <select name="fav-books">
+                <option value="DuNe">Dune</option>
+                <option value="Harry Potter">Harry Potter</option>
+                <option value="LTR">LTR </option>
+            </select>
+        
+          </form> 
+           
+          <h4>Text Area</h4>
+          <!-- text area include every space you include within the textarea block -->
+        
+
+        <h2>Headings</h2>
+        <h2>Paragraphjs</h2>
+        <h2>Lists</h2>
+
+        <ol>
+            <li>Dune</li>
+            <li>Lord of the rings</li>
+                <ol>
+                    <li>The fellowship of the Ring</li>
+                    <li>Something else</li>
+                </ol>
+            <li>Harry Potter</li>
+        </ol>
+        
+        <h3>Unordered lists</h3>
+        <ul>
+            <li>red</li>
+            <li>green</li>
+            <li>blue</li>
+        </ul>
+        <h2>tables</h2>
+
+        <table border ="1" width = "100%">
+            <tbody>
+                <!-- td = table data -->
+                <td rowspan="2" valign = "top">Dune</td>
+                <td>2020</td>
+                <td rowspan="3" valign = "top">2.5</td>
+                
+            </tbody>
+        </table>
+        
+        <table border ="1   " width = "100%">
+            <!-- headder -->
+            <thead>
+            </thead>
+                <tr>
+                    <!-- th = table header -->
+                    <th>Movie</th>
+                    <th>Year</th>
+                    <th>Rating</th>
+                </tr>
+            <tbody>
+                <!-- tr = table row -->
+                <tr>
+                    <!-- td = table data -->
+                    <td rowspan="2" valign = "top">Dune</td>
+                    <td>2020</td>
+                    <td rowspan="3" valign = "top">2.5</td>
+                    
+                </tr>
+                <tr>
+                    <td>2020</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Dune</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Image tag</h2>
+
+        Loading an image from the internet:<br />
+
+        <img
+        width="100%"
+        src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
+        />
+    </body>
+</html>
