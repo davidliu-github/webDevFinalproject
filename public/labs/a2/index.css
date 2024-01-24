@@ -1,0 +1,17 @@
+p {
+    color: red;
+    background-color: yellow;
+}
+
+p#p2 {
+    color: blue;
+    background-color: green;
+}
+
+.wd-class-selector {
+    color: black;
+    background-color: red;
+}
+
+/* immediate parent .p1 > .p2 */
+/* has an ancestor: .p1 .p3 */
