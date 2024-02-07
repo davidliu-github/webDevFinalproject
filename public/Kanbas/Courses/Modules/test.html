@@ -60,16 +60,20 @@
       </ul>
     </div>
 
-    <div class="row col-lg-9 col-md-9 me-1">
+    <div class="row col-md-9 col-lg-8">
       <div class="col-md-12 d-block d-md-none">
         <div class="top-bar">
-          <div>
-            <a href="/Kanbas/Navigation/index.html"><i class="fa fa-bars color-white"></i></a>
+          <div class="d-inline-flex gap-1">
+            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class="fa fa-bars color-white"></i>
+            </a>
           </div>
           <div style="text-align: center;">
             <a href="#" class="color-white">CS4550.12631.202410</a><br>
             <a href="#" class="color-white">Modules</a>
           </div>
+
           <div>
             <a href="/Kanbas/Courses/Navigation/index.html" class="color-white" style="text-decoration: none;">
               <i class="fa fa-glasses"></i>
@@ -79,20 +83,18 @@
         </div>
       </div>
 
-      <div class="col-md-12 flex-fill mt-4">
+      <div class="col-md-12 flex-fill me-4 mt-4">
         <div style="float : right;">
-          <button class="btn btn-light color-lightgray">Collapse All</button>
-          <button class="btn btn-light color-lightgray">View Progress</button>
-          <select class="btn btn-light color-lightgray">
+          <button>Collapse All</button>
+          <button>View Progress</button>
+          <select>
             <option>Publish All</option>
           </select>
-          <button class="btn btn-secondary module-button">+
-            Module</button>
-          <button class="btn btn-secondary color-lightgray"><i class="fa fa-ellipsis-v"></i></button>
+          <button style="color:white; background-color: red;">+ Module</button>
+          <button><i class="fa fa-ellipsis-v"></i></button>
         </div>
         <br>
         <hr>
-
         <div style="clear:both">
           </br>
           <ul class="list-group wd-modules">
@@ -161,42 +163,8 @@
                     <i class="fa fa-ellipsis-v ms-2"></i>
                   </span>
                 </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i> SLIDES
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i>
-                  <span class="ms-4">
-                    <i class="fa fa-chain color-green"></i>
-                    <a href="#" class="color-red-link">Introduction to Web Development</a></span>
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i>
-                  <span class="ms-4">
-                    <i class="fa fa-chain color-green"></i>
-                    <a href="#" class="color-red-link">Created an HTTP Server with Node.js</a></span>
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
               </ul>
             </li>
-
 
             <li class="list-group-item">
               <div class="wd-module-left-border-green">
@@ -266,47 +234,81 @@
                     <i class="fa fa-ellipsis-v ms-2"></i>
                   </span>
                 </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i> SLIDES
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i>
-                  <span class="ms-4">
-                    <i class="fa fa-chain color-green"></i>
-                    <a href="#" class="color-red-link">Introduction to Web Development</a></span>
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
-
-                <li class="list-group-item">
-                  <i class="fa fa-ellipsis-v"></i>
-                  <i class="fa fa-ellipsis-v"></i>
-                  <span class="ms-4">
-                    <i class="fa fa-chain color-green"></i>
-                    <a href="#" class="color-red-link">Created an HTTP Server with Node.js</a></span>
-                  <span class="float-end">
-                    <i class="fa fa-check-circle text-success"></i>
-                    <i class="fa fa-ellipsis-v ms-2"></i>
-                  </span>
-                </li>
-
               </ul>
             </li>
           </ul>
         </div>
       </div>
     </div>
+    <div class="flex-grow-0 me-2 d-none d-lg-block" style="width: 250px">
+      <h3>Course Status</h3>
+      <!-- Implement Course Status here -->
+      <ul class="list-group">
+        <div class="btn-group-vertical">
+          <div class="btn-group">
+            <button class="btn btn-outline-secondary"><i class="fa fa-ban"></i> Unpublish</button>
+            <button class="btn btn-outline-secondary wd-bg-lightgreen"><i class="fa fa-check-circle"
+                style="color:white;"></i> Published</button>
+
+          </div>
+          <button class="btn btn-outline-secondary align-left"><i class=" fa fa-sign-in"></i> Import Existing
+            Content</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-arrow-right"></i> Import from
+            Commons</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-bullseye"></i> Choose Home
+            Page</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-bar-chart"></i> View Course
+            Stream</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-bullhorn"></i> New
+            Announcement</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-bar-chart"></i> New
+            Analytics</button>
+          <button class="btn btn-outline-secondary align-left"><i class="fa fa-bell-o"></i>View Course
+            Notifications</button>
+        </div>
+      </ul>
+      <br>
+      <h5><b>TO DO</b></h5>
+      <hr>
+
+      <a href="#" style="color: red;"> <i class="fa fa-exclamation-circle"></i> Grade A1 - ENV + HTML</a>
+      <p style="font-size: 12px; margin-left: 20px; color: red;">100 points * Sep 8 at 11:59pm</p>
+
+      <br>
+      <h5><b>Coming Up</b> <a href="#" style="font-size: 14px; margin-left: 20px; color: red; float:right"><i
+            class="fa fa-calendar"></i> view
+          calendar</a></h5>
+      <hr>
+
+      <i class="fa fa-calendar"></i>
+      <a href="#" style="color: red;">Lecture</a><br>
+      <p class="ms-4" style="font-size: 12;">CS4550.12631.202410<br>
+        Sep 8 at 11:59pm<br></p>
+
+      <i class="fa fa-calendar"></i>
+      <a href="#" style="color: red;">Lecture 4550 Web Dev</a><br>
+      <p class="ms-4" style="font-size: 12;">CS4550.12631.202410<br>
+        Sep 8 at 11:59pm<br></p>
+    </div>
   </div>
 </body>
 
 </html>
+<p class="d-inline-flex gap-1">
+  <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+    aria-controls="collapseExample">
+    Link with href
+  </a>
+</p>
+
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    <ul class="list-group wd-modules">
+      <li class="list-group-item">
+        <a href="#">Course</a>
+      </li>
+      <li class="list-group-item">
+        <a href="#">DescrtiptionS</a>
+      </li>
+  </div>
+</div>
