@@ -1,5 +1,5 @@
 import { courses } from '../../Kanbas/Database'
-import { useParams, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useParams, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom'
 import { HiMiniBars3 } from 'react-icons/hi2'
 import CourseNavigation from './Navigation'
 import Modules from './Modules'
@@ -7,7 +7,7 @@ import Home from './Home'
 import './index.css'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Typography from '@mui/material/Typography'
-import { FaGlasses } from 'react-icons/fa'
+import { FaGlasses, FaBars, FaChevronDown } from 'react-icons/fa'
 import Assignments from './Assignments'
 
 function Courses() {
@@ -26,6 +26,34 @@ function Courses() {
   ))
   return (
     <div>
+      <div className="col-md-12 d-block d-md-none">
+        <div className="top-bar">
+          <div>
+            <a href="/Kanbas/Navigation/index.html">
+              <FaBars className="color-white" />
+            </a>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <Link to={'/'} className="color-white">
+              CS4550.12631.202410
+            </Link>
+            <br />
+            <Link to={'/'} className="color-white">
+              Modules
+            </Link>
+          </div>
+          <div>
+            <a
+              href="/Kanbas/Courses/Navigation/index.html"
+              className="color-white"
+              style={{ textDecoration: 'none' }}
+            >
+              <FaGlasses />
+              <FaChevronDown />
+            </a>
+          </div>
+        </div>
+      </div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Breadcrumbs separator="›" aria-label="breadcrumb">
           <HiMiniBars3 className="color-red size-25 ms-2" />
