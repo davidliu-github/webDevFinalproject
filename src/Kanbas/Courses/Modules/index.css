@@ -92,3 +92,39 @@
 .color-black {
   color: black;
 }
+
+.box-container {
+  border: 2px  solid lightgray; 
+  padding: 10px; 
+  border-radius: 10px; 
+  margin-right : 500px;
+}
+
+.addmodule-box {
+  border: 2px  solid lightgray; 
+  border-radius: 5px;
+}
+
+.wd-modules .btn.btn-danger {
+  all: revert; /* Revert all properties to their default values */
+  background-color: #dc3545; /* Bootstrap's default danger background color */
+  color: #fff; /* Bootstrap's default text color for danger buttons */
+  border-color: #dc3545; /* Bootstrap's default border color for danger buttons */
+  border-radius: 0.25rem; /* Bootstrap's default border radius */
+  padding: 0.25rem 0.5rem; /* Decreased padding to make the button smaller */
+  font-size: 0.875rem; /* Decreased font size to make the text smaller */
+  line-height: 1.25; /* Decreased line height to vertically center the text */
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Bootstrap's default transition */
+}
+
+.wd-modules .btn.btn-success {
+  all: revert; /* Revert all properties to their default values */
+  background-color: green; /* Bootstrap's default danger background color */
+  color: #fff; /* Bootstrap's default text color for danger buttons */
+  border-color: green; /* Bootstrap's default border color for danger buttons */
+  border-radius: 0.25rem; /* Bootstrap's default border radius */
+  padding: 0.25rem 0.5rem; /* Decreased padding to make the button smaller */
+  font-size: 0.875rem; /* Decreased font size to make the text smaller */
+  line-height: 1.25; /* Decreased line height to vertically center the text */
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Bootstrap's default transition */
+}
