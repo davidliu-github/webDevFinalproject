@@ -11,6 +11,7 @@ import { FaGlasses, FaBars, FaChevronDown } from 'react-icons/fa'
 import Assignments from './Assignments'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Table from '../../Quizzes/Table'
 
 function Courses() {
   const { courseId } = useParams()
@@ -97,7 +98,7 @@ function Courses() {
               element={<h2>Assignment Editor</h2>}
             />
             <Route path="Grades" element={<h2>Grades</h2>} />
-            <Route path="Quizzes" element={<h2>Quizzes</h2>} />
+            <Route path="Quizzes" element={<Table/>} />
             <Route path="People" element={<h2>People</h2>} />
           </Routes>
         </div>
