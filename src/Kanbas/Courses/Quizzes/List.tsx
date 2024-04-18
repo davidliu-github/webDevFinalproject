@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addQuiz, updateQuiz, setQuiz, deleteQuiz, setQuizzes } from './reducer.js'
 import { KanbasState } from '../../store'
 import * as client from './client'
-
+import ListItem from './ListItem'
 function QuizzesList() {
   const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
   const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
@@ -74,28 +74,9 @@ function QuizzesList() {
 
 
             {quizList.map((quiz) => (
-                <li className="list-group-item mt-2">
-                  <FaEllipsisV className="me-2" />
-                  {quiz.title}
-                  <span className="float-end">
-
-                    <button
-                      className="btn btn-success"
-                      onClick={() => dispatch(setQuiz(quiz))}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDeleteQuiz(quiz._id)}
-                    >
-                      Delete
-                    </button>
-                    <FaCheckCircle className="ms-2 text-success" />
-                    <FaPlusCircle className="ms-2" />
-                    <FaEllipsisV className="ms-2" />
-                  </span>
-                </li>
+                <>
+                <ListItem quiz={quiz} setQuiz={()=>dispatch(setQuiz(quiz))} deleteQuiz={()=> handleDeleteQuiz(quiz._id)}/>
+                </>
             ))}
           </div>
         </li>
