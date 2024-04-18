@@ -47,7 +47,6 @@ const ListItem: React.FC<Quiz> = (props) => {
       <span className="float-end">
         {props.quiz.published ? <FaCheckCircle className="ms-2 text-success" /> : <FaBan className="ms-2 text-secendary" />}
         
-        <FaPlusCircle className="ms-2" />
         <Menu menuButton={<MenuButton style={{ "backgroundColor": 'white' }}><FaEllipsisV /></MenuButton>}>
           <div style={{ "backgroundColor": "white", "position": "fixed", "zIndex": 100 }}>
             <MenuItem style={{ "listStyleType": "none" }}><Link to={pathname + "/" + props.quiz.title}>Edit</Link></MenuItem>
@@ -57,7 +56,8 @@ const ListItem: React.FC<Quiz> = (props) => {
         </Menu>
       </span>
       <br/>
-      <span className="ms-4 fw-bold">Not available until {availableDate}</span> Due {dueDate} pts {points.toString()}  questions {questions.toString()}
+      <span className="ms-4 fw-bold">Not available until {availableDate}</span> 
+      Due {dueDate} {points} pts questions 
     </li>
   );
 };
