@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  quizzes: [{_id: "", quizType: "", points: 0, assignmentGroup: "", shuffleAnswers: "", timeLimit: 0, multipleAttempts: "", showCorrectAnswers: false, accessCode: "", oneQuestionAtATime: "", webcamRequired: "", lockQuestion: "", dueDate: "", availableDate: "", untilDate: "", published: false, title: ""}],
-  quiz: { quizType: "", points: 0, assignmentGroup: "", shuffleAnswers: "", timeLimit: 0, multipleAttempts: "", showCorrectAnswers: false, accessCode: "", oneQuestionAtATime: "", webcamRequired: "", lockQuestion: "", dueDate: "", availableDate: "", untilDate: "", published: false, title: "" },
+  quizzes: [],
+  quiz: { quizType: "GRADED_QUIZ", points: 0, assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 0, multipleAttempts: false, showCorrectAnswers: false, accessCode: "1234", oneQuestionAtATime: true, webcamRequired: false, lockQuestion: false, dueDate: "2222-1-1", availableDate: "2222-1-1", untilDate: "2222-1-1", published: false, title: "blank" },
 }
 
 const quizzesSlice = createSlice({
@@ -13,7 +13,7 @@ const quizzesSlice = createSlice({
       state.quizzes = action.payload
     },
 
-    addQuizzes: (state, action) => {
+    addQuiz: (state, action) => {
       state.quizzes = [action.payload, ...state.quizzes];
     },
 

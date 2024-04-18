@@ -5,12 +5,11 @@ import { FaEllipsisV, FaCheckCircle, FaPlusCircle } from 'react-icons/fa'
 import { useParams } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useSelector, useDispatch } from 'react-redux'
-import { addQuiz, updateQuiz, setQuiz, deleteQuiz, setQuizzes } from './reducer'
+import { addQuiz, updateQuiz, setQuiz, deleteQuiz, setQuizzes } from './reducer.js'
 import { KanbasState } from '../../store'
 import * as client from './client'
 
 function QuizzesList() {
-  const { quizTitle } = useParams()
   const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
   const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
   const dispatch = useDispatch()
@@ -18,18 +17,18 @@ function QuizzesList() {
     client
       .getQuizzes()
       .then((quizzes) => dispatch(setQuizzes(quizzes)))
-  }, [quizTitle])
+  }, [])
   const handleAddQuiz = () => {
-    client.createQuiz(quizTitle, module).then((module) => {
-      dispatch(addQuiz(module))
+    client.createQuiz(quiz).then((quiz) => {
+      dispatch(addQuiz(quiz))
     })
   }
   const handleUpdateQuiz = async () => {
     const status = await client.updateQuiz(quiz)
-    dispatch(updateQuiz(module))
+    dispatch(updateQuiz(quiz))
   }
- 
-  const handleDeleteModule = (quizId: string) => {
+
+  const handleDeleteQuiz = (quizId: string) => {
     client.deleteQuiz(quizId).then((status) => {
       dispatch(deleteQuiz(quizId))
     })
@@ -38,7 +37,11 @@ function QuizzesList() {
     <div className="me-4">
       <div className="col-md-12 flex-fill mt-4">
         <div style={{ float: 'right' }}>
-          <button className="btn btn-secondary module-button">+ Quiz</button>
+          <button
+            className="btn btn-secondary module-button"
+            onClick={() => handleAddQuiz()}>
+            + Quiz
+          </button>
 
           <button className="btn btn-secondary color-lightgray ">
             <FaEllipsisV className="color-black" />
@@ -53,54 +56,49 @@ function QuizzesList() {
           className="addmodule-box"
           placeholder='Search for Quiz'
         />
-        
+
         <br />
       </div>
 
       <ul className="list-group wd-modules">
+        <li
+          className="list-group-item"
+          onClick={(event) => {
+            dispatch(setQuiz(quiz))
+          }}
+        >
 
-        {quizList.map((quiz) => (
-            <li
-              className="list-group-item"
-              onClick={(event) => {
-                dispatch(setQuiz(quiz))
-              }}
-            >
+          <div>
+            <FaEllipsisV className="me-2" />
+            Assignment Quizzes
 
-              <div>
-                <FaEllipsisV className="me-2" />
-                Assignment Quizzes
-                <span className="float-end">
-                  <button
-                    className="btn btn-success"
-                    onClick={() => dispatch(setQuiz(quiz))}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDeleteModule(quiz._id)}
-                  >
-                    Delete
-                  </button>
-                  <FaCheckCircle className="ms-2 text-success" />
-                  <FaPlusCircle className="ms-2" />
-                  <FaEllipsisV className="ms-2" />
-                </span>
-                <ul className="list-group">
-                    <li className="list-group-item">
-                      <FaEllipsisV className="me-2" />
-                      {quiz.title}
-                      <span className="float-end">
-                        <FaCheckCircle className="text-success" />
-                        <FaEllipsisV className="ms-2" />
-                      </span>
-                    </li>
-              
-                </ul>
-              </div>
-            </li>
-          ))}
+
+            {quizList.map((quiz) => (
+                <li className="list-group-item mt-2">
+                  <FaEllipsisV className="me-2" />
+                  {quiz.title}
+                  <span className="float-end">
+
+                    <button
+                      className="btn btn-success"
+                      onClick={() => dispatch(setQuiz(quiz))}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteQuiz(quiz._id)}
+                    >
+                      Delete
+                    </button>
+                    <FaCheckCircle className="ms-2 text-success" />
+                    <FaPlusCircle className="ms-2" />
+                    <FaEllipsisV className="ms-2" />
+                  </span>
+                </li>
+            ))}
+          </div>
+        </li>
       </ul>
     </div>
   )

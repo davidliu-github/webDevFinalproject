@@ -12,8 +12,8 @@ export const getQuizzes = async () => {
   return response.data
 }
 
-export const createQuiz = async (title: any, quiz: any) => {
-  const response = await axios.post(`${QUIZZES_API}/${title}/quizzes`, quiz)
+export const createQuiz = async (quiz: any) => {
+  const response = await axios.post(`${QUIZZES_API}`, quiz)
   return response.data
 }
 
