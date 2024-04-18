@@ -58,7 +58,7 @@ function QuizzesList() {
       </div>
 
       <ul className="list-group wd-modules">
-        Assignment Quizzes
+
         {quizList.map((quiz) => (
             <li
               className="list-group-item"
@@ -66,9 +66,10 @@ function QuizzesList() {
                 dispatch(setQuiz(quiz))
               }}
             >
+
               <div>
                 <FaEllipsisV className="me-2" />
-                {quiz.name}
+                Assignment Quizzes
                 <span className="float-end">
                   <button
                     className="btn btn-success"
@@ -86,6 +87,17 @@ function QuizzesList() {
                   <FaPlusCircle className="ms-2" />
                   <FaEllipsisV className="ms-2" />
                 </span>
+                <ul className="list-group">
+                    <li className="list-group-item">
+                      <FaEllipsisV className="me-2" />
+                      {quiz.title}
+                      <span className="float-end">
+                        <FaCheckCircle className="text-success" />
+                        <FaEllipsisV className="ms-2" />
+                      </span>
+                    </li>
+              
+                </ul>
               </div>
             </li>
           ))}
