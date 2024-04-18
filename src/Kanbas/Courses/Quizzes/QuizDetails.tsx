@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-function MyComponent(){
+function QuizDetails(){
 
   return (
     <div>
@@ -9,4 +9,4 @@ function MyComponent(){
   );
 };
 
-export default MyComponent;
+export default QuizDetails;

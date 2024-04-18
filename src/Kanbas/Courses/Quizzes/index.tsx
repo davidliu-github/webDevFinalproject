@@ -1,5 +1,5 @@
 import QuizzesList from "./List";
-function Modules() {
+function Quizzes() {
   return (
     <div>
       <h2>Quizzes</h2>
@@ -7,4 +7,4 @@ function Modules() {
     </div>
   );
 }
-export default Modules;
+export default Quizzes;

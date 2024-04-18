@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   quizzes: [],
-  quiz: { quizType: "GRADED_QUIZ", points: 0, assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 0, multipleAttempts: false, showCorrectAnswers: false, accessCode: "1234", oneQuestionAtATime: true, webcamRequired: false, lockQuestion: false, dueDate: "2222-1-1", availableDate: "2222-1-1", untilDate: "2222-1-1", published: false, title: "blank" },
+  quiz: { quizType: "GRADED_QUIZ", points: 0, assignmentGroup: "Quizzes", shuffleAnswers: true, timeLimit: 0, multipleAttempts: false, showCorrectAnswers: false, accessCode: "1234", oneQuestionAtATime: true, webcamRequired: false, lockQuestion: false, dueDate: "2222-1-1", availableDate: "2222-1-1", untilDate: "2222-1-1", published: false, title: "blank", questions: 0},
 }
 
 const quizzesSlice = createSlice({
