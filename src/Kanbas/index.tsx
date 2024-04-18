@@ -49,7 +49,54 @@ function Kanbas() {
       }),
     )
   }
+////////////////////////////////////////
 
+const [quizzes, setQuizzes] = useState<any[]>([])
+const QUIZZES_API = `${API_BASE}/api/quizzes`
+const findAllQuizzes = async () => {
+  const response = await axios.get(QUIZZES_API)
+  setQuizzes(response.data)
+}
+useEffect(() => {
+  findAllQuizzes()
+}, [])
+
+const [quiz, setQuiz] = useState({
+  _id: '1234',
+  title: 'New Quiz',
+  quizType: 'New Number',
+  points: 0,
+  assignmentGroup: "Exams",
+  shuffleAnswers: true,
+  timeLimit: 20,
+  multipleAttempts: false,
+  showCorrectAnswers: false,
+  accessCode: "1234",
+  oneQuestionAtATime: true,
+  webcamRequired: false,
+  lockQuestion: false,
+  dueDate: "2023-09-10",
+  availableDate: "2023-09-11",
+  untilDate: "2023-09-12",
+  published: false,
+})
+const addNewQuiz = async () => {
+  const response = await axios.post(QUIZZES_API, quiz)
+  setQuizzes([...quizzes, response.data])
+}
+const updateQuiz = async () => {
+  const response = await axios.put(`${QUIZZES_API}/${quiz._id}`, quiz)
+
+  setQuizzes(
+    courses.map((q) => {
+      if (q._id === quiz._id) {
+        return course
+      } else {
+        return q
+      }
+    }),
+  )
+}
   return (
     <Provider store={store}>
       <div className="d-flex">
