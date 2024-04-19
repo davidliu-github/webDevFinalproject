@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { FaCheckCircle, FaEllipsisV, FaPlusCircle, FaBan, FaRocket } from 'react-icons/fa';
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type QuizTemplate = {
   quizType: string;
@@ -38,7 +38,7 @@ type Test = {
 
 const ListItem: React.FC<Quiz> = (props) => {
   const { pathname } = useLocation();
-  const [showPopup, setShowPopup] = React.useState(false);
+  const navigate = useNavigate();
   const { availableDate, dueDate, points, questions, published, title } = props.quiz;
   return (
     <li className="list-group-item mt-2">
@@ -49,7 +49,7 @@ const ListItem: React.FC<Quiz> = (props) => {
         
         <Menu menuButton={<MenuButton style={{ "backgroundColor": 'white' }}><FaEllipsisV /></MenuButton>}>
           <div style={{ "backgroundColor": "white", "position": "fixed", "zIndex": 100 }}>
-            <MenuItem style={{ "listStyleType": "none" }}><Link to={pathname + "/" + props.quiz.title + "/edit"}>Edit</Link></MenuItem>
+            <MenuItem style={{ "listStyleType": "none" }} onClick={()=>{navigate(pathname + '/' + props.quiz.title + '/edit', {state:{quiz: props.quiz}})}}>Edit</MenuItem>
             <MenuItem style={{ "listStyleType": "none" }} onClick={props.deleteQuiz}>Delete</MenuItem>
             <MenuItem style={{ "listStyleType": "none" }}>Publish</MenuItem>
           </div>
