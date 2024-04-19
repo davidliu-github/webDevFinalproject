@@ -25,7 +25,7 @@ type QuizTemplate = {
 
 type Quiz = {
   quiz: QuizTemplate;
-  setQuiz: () => {};
+  setQuiz: () => void;
   deleteQuiz: () => void;
 
 };
@@ -56,17 +56,17 @@ const ListItem: React.FC<Quiz> = (props) => {
   const [showPopup, setShowPopup] = React.useState(false);
   const { availableDate, untilDate, dueDate, points, questions, published, title } = props.quiz;
   const questions1 = questions.toString();
-  
+
   return (
     <li className="list-group-item mt-2">
       {published ? <FaRocket className="ms-2  me-2 text-success" /> : <FaRocket className="ms-2  me-2 text-secendary" /> }
-      <span className='text-uppercase fw-bold'><Link to={pathname + "/" + title + "/details"}>{title}</Link></span>
+      <span className='text-uppercase fw-bold' ><Link to={pathname + "/" + title + "/details"} onClick={() => props.setQuiz()}>{title}</Link></span>
       <span className="float-end">
         {props.quiz.published ? <FaCheckCircle className="ms-2 text-success" /> : <FaBan className="ms-2 text-secendary" />}
         
         <Menu menuButton={<MenuButton style={{ "backgroundColor": 'white' }}><FaEllipsisV /></MenuButton>}>
           <div style={{ "backgroundColor": "white", "position": "fixed", "zIndex": 100 }}>
-            <MenuItem style={{ "listStyleType": "none" }}><Link to={pathname + "/" + props.quiz.title + "/edit"}>Edit</Link></MenuItem>
+            <MenuItem style={{ "listStyleType": "none" }} onClick={props.setQuiz}><Link to={pathname + "/" + props.quiz.title + "/edit"}>Edit</Link></MenuItem>
             <MenuItem style={{ "listStyleType": "none" }} onClick={props.deleteQuiz}>Delete</MenuItem>
             <MenuItem style={{ "listStyleType": "none" }}>Publish</MenuItem>
           </div>

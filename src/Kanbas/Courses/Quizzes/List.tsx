@@ -33,6 +33,7 @@ function QuizzesList() {
       dispatch(deleteQuiz(quizId))
     })
   }
+
   return (
     <div className="me-4">
       <div className="col-md-12 flex-fill mt-4">
@@ -63,9 +64,7 @@ function QuizzesList() {
       <ul className="list-group wd-modules">
         <li
           className="list-group-item"
-          onClick={(event) => {
-            dispatch(setQuiz(quiz))
-          }}
+
         >
 
           <div>
@@ -74,9 +73,9 @@ function QuizzesList() {
 
 
             {quizList.map((quiz) => (
-                <>
-                <ListItem quiz={quiz} setQuiz={()=>dispatch(setQuiz(quiz))} deleteQuiz={()=> handleDeleteQuiz(quiz._id)}/>
-                </>
+              <>
+                <ListItem quiz={quiz} setQuiz={() => dispatch(setQuiz(quiz))} deleteQuiz={() => handleDeleteQuiz(quiz._id)} />
+              </>
             ))}
           </div>
         </li>
