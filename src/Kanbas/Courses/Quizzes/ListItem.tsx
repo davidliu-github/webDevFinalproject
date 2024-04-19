@@ -38,8 +38,25 @@ type Test = {
 
 const ListItem: React.FC<Quiz> = (props) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const { availableDate, dueDate, points, questions, published, title } = props.quiz;
+
+  const currentDate = new Date();
+  const availableDate1 = new Date(props.quiz.availableDate);
+  const untilDate1 = new Date(props.quiz.untilDate);
+  let availabilityStatus = '';
+  let availabilityDate = '';
+  if (currentDate < availableDate1) {
+    availabilityStatus = `Not available until`;
+    availabilityDate = availableDate1.toDateString();
+  } else if (currentDate > untilDate1) {
+    availabilityStatus = 'Closed';
+  } else if (currentDate >= availableDate1 && currentDate <= untilDate1) {
+    availabilityStatus = 'Available';
+  }
+
+  const [showPopup, setShowPopup] = React.useState(false);
+  const { availableDate, untilDate, dueDate, points, questions, published, title } = props.quiz;
+  const questions1 = questions.toString();
+  
   return (
     <li className="list-group-item mt-2">
       {published ? <FaRocket className="ms-2  me-2 text-success" /> : <FaRocket className="ms-2  me-2 text-secendary" /> }
@@ -56,8 +73,8 @@ const ListItem: React.FC<Quiz> = (props) => {
         </Menu>
       </span>
       <br/>
-      <span className="ms-4 fw-bold">Not available until {availableDate}</span> 
-      Due {dueDate} {points} pts questions 
+      <span className="ms-4 fw-bold"> { availabilityStatus + "  "} </span> {availabilityDate + "  "}
+      <b>Due</b> {dueDate +"  "} {points + "  "} pts Questions {questions1}
     </li>
   );
 };
