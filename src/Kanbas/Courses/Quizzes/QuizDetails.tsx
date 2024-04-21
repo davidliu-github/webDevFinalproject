@@ -29,14 +29,12 @@ function QuizzesDetails() {
   }
   const handleUpdateTrue = async () => {
     const updatedQuiz = { ...quiz, published: true };
-    console.log("id is", quiz._id)
     const status = await client.updateQuiz(updatedQuiz);
     dispatch(updateQuiz(updatedQuiz));
   };
 
   const handleUpdateFalse = async () => {
     const updatedQuiz = { ...quiz, published: false };
-    console.log("id is", quiz._id)
     const status = await client.updateQuiz(updatedQuiz);
     dispatch(updateQuiz(updatedQuiz));
   };
@@ -45,9 +43,11 @@ function QuizzesDetails() {
       dispatch(deleteQuiz(quizId))
     })
   }
+  function refreshPage(){ 
+    window.location.reload();
+}
 
-
-  const pubColor = 'btn-' + (quiz.published ? 'success' : 'danger');
+  const pubColor = 'btn-' + (quiz.published ? 'danger' : 'success');
   const { pathname } = useLocation();
   const lastSlashIndex = pathname.lastIndexOf("/");
   const substringBeforeLastSlash = pathname.substring(0, lastSlashIndex);
@@ -55,13 +55,14 @@ function QuizzesDetails() {
     <div className="me-4">
       <div className="col-md-12 flex-fill mt-4">
         <div style={{ float: 'right' }}>
-          <button
-            className={`button btn ${pubColor}`}
-            onClick={() => {quiz.published ? handleUpdateFalse() : handleUpdateTrue()}}>
-              {quiz.published ? <FaCheckCircle /> : <FaBan/>}
-              {quiz.published ? "Published" : 'Unpublish'}
-
-          </button>
+          <Link to={pathname} onClick={refreshPage}>
+            <button
+              className={`button btn ${pubColor}`}
+              onClick={() => { quiz.published ? handleUpdateFalse() : handleUpdateTrue() }}>
+              {quiz.published ? <FaCheckCircle /> : <FaBan />}
+              {quiz.published ? "Unpublish" : 'Publish'}
+            </button>
+          </Link>
           <button
             className="button btn btn-secondary"
             onClick={() => handleAddQuiz()}>
@@ -294,17 +295,17 @@ function QuizzesDetails() {
           </div>
           <div className="col-3">
             <div className='d-flex'>
-            <span className='fw-bold'>For</span>
+              <span className='fw-bold'>For</span>
             </div>
           </div>
           <div className="col-3">
-          <div className='d-flex'>
-            <span className='fw-bold'>Availiable From</span>
+            <div className='d-flex'>
+              <span className='fw-bold'>Availiable From</span>
             </div>
           </div>
           <div className="col-3">
-          <div className='d-flex'>
-            <span className='fw-bold'>Until</span>
+            <div className='d-flex'>
+              <span className='fw-bold'>Until</span>
             </div>
           </div>
         </div>
@@ -321,13 +322,13 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-3">
-          <div className='d-flex'>
-            {quiz.availableDate}
+            <div className='d-flex'>
+              {quiz.availableDate}
             </div>
           </div>
           <div className="col-3">
-          <div className='d-flex'>
-            {quiz.untilDate}
+            <div className='d-flex'>
+              {quiz.untilDate}
             </div>
           </div>
         </div>
