@@ -1,12 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC } from 'react'
 
-function QuizDetails(){
+function QuizDetails() {
+  return <div>{/* Component JSX goes here dsadas*/}</div>
+}
 
-  return (
-    <div>
-      {/* Component JSX goes here */}
-    </div>
-  );
-};
-
-export default QuizDetails;
+export default QuizDetails
