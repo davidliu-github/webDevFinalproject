@@ -2,8 +2,8 @@ import axios from 'axios'
 const API_BASE = process.env.REACT_APP_API_BASE
 const QUIZZES_API = `${API_BASE}/api/quizzes`
 
-export const getQuiz = async (title: any) => {
-  const response = await axios.get(`${QUIZZES_API}/${title}/quizzes`)
+export const getQuizByTitle = async (quizTitle: any) => {
+  const response = await axios.get(`${QUIZZES_API}/title/${quizTitle}`)
   return response.data
 }
 
