@@ -28,6 +28,11 @@ export const deleteQuiz = async (quizId: any) => {
 }
 
 export const createQuestion = async (quizId: string, question: any) => {
-  const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);
-  return response.data;
+  const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question)
+  return response.data
+}
+
+export const getQuizByQuestionId = async (questionId: string) => {
+  const response = await axios.get(`${QUIZZES_API}/questions/${questionId}`)
+  return response.data
 }
