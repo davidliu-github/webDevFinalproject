@@ -47,11 +47,11 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
 
   const getInstructionalText = () => {
     switch (question.type) {
-      case 'Multiple Choice':
+      case 'multiple-choice':
         return 'Enter your question and multiple answers, then select the one correct answer.'
-      case 'True/False':
+      case 'true-false':
         return 'Enter your question text, then select if True or False is the correct answer.'
-      case 'Fill in the Blank':
+      case 'fill-in-blank':
         return 'Enter your question text, then define all possible correct answers for the blank.\nStudents will see the question followed by a small text box to type their answer.'
       default:
         return ''
@@ -104,9 +104,9 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
             onChange={(e) => setQuestion({ ...question, type: e.target.value })}
             style={{ width: 'auto' }}
           >
-            <option value="Multiple Choice">Multiple Choice</option>
-            <option value="True/False">True/False</option>
-            <option value="Fill in the Blank">Fill in the Blank</option>
+            <option value="multiple-choice">Multiple Choice</option>
+            <option value="true-false">True/False</option>
+            <option value="fill-in-blank">Fill in the Blank</option>
           </select>
         </div>
 
@@ -139,7 +139,7 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
 
       <h5 className={'mt-4'}>Answers:</h5>
 
-      {/* {question.type === 'True/False' && (
+      {/* {question.type === 'true-false' && (
         <div className="mb-3">
           <div className="form-check form-check-inline">
             <input
@@ -172,7 +172,7 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
         </div>
       )} */}
 
-      {question.type !== 'True/False' &&
+      {question.type !== 'true-false' &&
         answers.map(
           (
             answer: {
@@ -207,7 +207,7 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
           ),
         )}
 
-      {question.type === 'Multiple Choice' && (
+      {question.type === 'multiple-choice' && (
         <div className="d-flex justify-content-end">
           <button className="btn btn-outline-danger" onClick={addAnswer}>
             + Add Another Answer
