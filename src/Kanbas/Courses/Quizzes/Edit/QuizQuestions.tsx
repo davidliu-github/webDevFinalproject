@@ -19,6 +19,9 @@ function renderSwitch(question: any) {
 function QuizQuestions() {
   const location = useLocation()
   const path = location.pathname
+  const previewPath = path.substring(path.indexOf('Kanbas/'), path.indexOf('/Quizzes'))
+  console.log('@@@@@@ PREVIEW PATH: ', previewPath)
+
   const quizTitle = path.substring(
     path.indexOf('Quizzes/') + 8,
     path.indexOf('/edit/questions'),
@@ -67,6 +70,13 @@ function QuizQuestions() {
         </Link>
         <Link className="nav-link active" to={path}>
           Questions
+        </Link>
+        {/* Temporary Until Details page is set up */}
+        <Link
+          className="nav-link"
+          to={`/${previewPath}/Quizzes/${quizTitle}/QuizPreview`}
+        >
+          Question Preview
         </Link>
       </nav>
       <div className="question-list">

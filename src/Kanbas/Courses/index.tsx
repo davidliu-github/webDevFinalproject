@@ -15,6 +15,7 @@ import axios from 'axios'
 import QuizDetails from './Quizzes/QuizDetails'
 import QuizEdit from './Quizzes/QuizEdit'
 import QuizQuestions from './Quizzes/Edit/QuizQuestions'
+import QuizPreview from './Quizzes/Edit/QuizPreview'
 
 function Courses() {
   const { courseId } = useParams()
@@ -106,6 +107,7 @@ function Courses() {
             <Route path="Quizzes/:title/edit" element={<QuizEdit />} />
             <Route path="Quizzes/:title/edit/questions" element={<QuizQuestions />} />
             <Route path="People" element={<h2>People</h2>} />
+            <Route path="Quizzes/:title/QuizPreview" element={<QuizPreview />} />
           </Routes>
         </div>
       </div>
