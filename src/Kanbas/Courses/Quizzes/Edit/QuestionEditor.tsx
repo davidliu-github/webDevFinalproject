@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import QuizDetails from '../QuizDetails'
-import * as client from '../client'
 import { Question } from './QuizQuestions'
 
 function QuestionEditor({
   currQuestion,
   handleUpdateActiveQuestionId,
+  questions,
+  handleUpdateQuestion,
 }: {
   currQuestion: Question
   handleUpdateActiveQuestionId: (id: string | undefined) => void
+  questions: Question[]
+  handleUpdateQuestion: (question: Question) => void
 }) {
   const [question, setQuestion] = useState({
     _id: currQuestion._id,
@@ -32,28 +35,9 @@ function QuestionEditor({
     })),
   )
 
-  const [quiz, setQuiz] = useState<any>({})
-
-  const findQuiz = async () => {
-    if (!currQuestion._id) return
-    const response = await client.getQuizByQuestionId(currQuestion._id)
-    setQuiz(response)
-  }
-
   const updateQuiz = async () => {
-    try {
-      const newQuestions = quiz.questions.map((q: any) =>
-        q._id === question._id ? question : q,
-      )
-      await client.updateQuiz({ ...quiz, questions: newQuestions })
-      setQuiz((prevState: any) => {
-        return { ...prevState, questions: newQuestions }
-      })
-      console.log('new quiz', quiz)
-      handleUpdateActiveQuestionId(undefined)
-    } catch (err: any) {
-      console.log(`Error updating quiz: ${err}`)
-    }
+    handleUpdateQuestion(question)
+    handleUpdateActiveQuestionId(undefined)
   }
 
   const getInstructionalText = () => {
@@ -106,10 +90,6 @@ function QuestionEditor({
       }
     })
   }
-
-  useEffect(() => {
-    findQuiz()
-  }, [])
 
   return (
     <div

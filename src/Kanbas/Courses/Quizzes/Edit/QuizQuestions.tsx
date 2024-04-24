@@ -67,17 +67,13 @@ function QuizQuestions() {
 
   const handleDeleteQuestion = async (id: string | undefined) => {
     if (!id) return
-    try {
-      const response = await client.deleteQuizQuestion(quizState.quizId, id)
-      setQuizState((prevState) => ({
-        ...prevState,
-        questions: prevState.questions.filter((question) => question._id !== id),
-      }))
-    } catch (err) {
-      console.log(`Error deleting question: ${err}`)
-    }
+    setQuizState((prevState) => ({
+      ...prevState,
+      questions: prevState.questions.filter((question) => question._id !== id),
+    }))
   }
 
+  // todo remove client call but create a new one that we can select?
   const handleNewQuestion = async () => {
     try {
       const response = await client.createQuestion(quizState.quizId, defaultQuestion)
@@ -95,6 +91,7 @@ function QuizQuestions() {
     }
   }
 
+  // should be only call to update DB
   const saveQuizQuestionsToDB = async () => {
     try {
       const response = await client.updateQuizQuestions(
@@ -105,6 +102,15 @@ function QuizQuestions() {
     } catch (err: any) {
       console.log(`Error updating quiz: ${err}`)
     }
+  }
+
+  const handleUpdateQuestion = (question: Question) => {
+    setQuizState((prevState) => ({
+      ...prevState,
+      questions: prevState.questions.map((q) =>
+        q._id === question._id ? question : q,
+      ),
+    }))
   }
 
   React.useEffect(() => {
@@ -138,6 +144,8 @@ function QuizQuestions() {
             <QuestionEditor
               currQuestion={question}
               handleUpdateActiveQuestionId={handleUpdateActiveQuestionId}
+              questions={quizState.questions}
+              handleUpdateQuestion={handleUpdateQuestion}
             />
           ) : (
             <div key={index} className="question" style={{ border: '1px solid black' }}>
@@ -185,7 +193,12 @@ function QuizQuestions() {
       <hr />
       <span className="question-question-finish-buttons">
         <input type="checkbox" /> Notify users this quiz has changed
-        <button className="btn btn-outline-secondary">Cancel</button>
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => window.location.reload()}
+        >
+          Cancel
+        </button>
         <button className="btn btn-outline-secondary" onClick={saveQuizQuestionsToDB}>
           Save & Publish
         </button>
