@@ -3,7 +3,7 @@ import QuizDetails from '../QuizDetails'
 import * as client from '../client'
 import { Question } from './QuizQuestions'
 
-function MultipleChoiceEdit({
+function QuestionEditor({
   currQuestion,
   handleUpdateActiveQuestionId,
 }: {
@@ -46,7 +46,10 @@ function MultipleChoiceEdit({
         q._id === question._id ? question : q,
       )
       await client.updateQuiz({ ...quiz, questions: newQuestions })
-      setQuiz({ ...quiz, questions: newQuestions })
+      setQuiz((prevState: any) => {
+        return { ...prevState, questions: newQuestions }
+      })
+      console.log('new quiz', quiz)
       handleUpdateActiveQuestionId(undefined)
     } catch (err: any) {
       console.log(`Error updating quiz: ${err}`)
@@ -68,6 +71,9 @@ function MultipleChoiceEdit({
 
   const addAnswer = () => {
     setAnswers([...answers, { value: '', isCorrect: false }])
+    setQuestion((prevState) => {
+      return { ...prevState, choices: [...prevState.choices, ''] }
+    })
   }
 
   const updateAnswer = (index: number, value: any) => {
@@ -75,6 +81,9 @@ function MultipleChoiceEdit({
       idx === index ? { ...answer, value: value } : answer,
     )
     setAnswers(updatedAnswers)
+    setQuestion((prevState) => {
+      return { ...prevState, choices: updatedAnswers.map((a: any) => a.value) }
+    })
   }
 
   const setCorrect = (index: number) => {
@@ -83,10 +92,19 @@ function MultipleChoiceEdit({
       isCorrect: idx === index,
     }))
     setAnswers(updatedAnswers)
+    setQuestion((prevState) => {
+      return { ...prevState, answer: updatedAnswers[index].value }
+    })
   }
 
   const removeAnswer = (index: number) => {
-    setAnswers(answers.filter((_: any, idx: number) => idx !== index))
+    setAnswers((prevState) => prevState.filter((_: any, idx: number) => idx !== index))
+    setQuestion((prevState) => {
+      return {
+        ...prevState,
+        choices: prevState.choices.filter((_: any, idx: number) => idx !== index),
+      }
+    })
   }
 
   useEffect(() => {
@@ -105,11 +123,21 @@ function MultipleChoiceEdit({
             className="form-control me-2"
             defaultValue="Question Title"
             style={{ marginRight: '10px' }}
+            value={question.title}
+            onChange={(e) =>
+              setQuestion((prevState) => {
+                return { ...prevState, title: e.target.value }
+              })
+            }
           />
           <select
             className="form-select"
             value={question.type}
-            onChange={(e) => setQuestion({ ...question, type: e.target.value })}
+            onChange={(e) =>
+              setQuestion((prevState) => {
+                return { ...prevState, type: e.target.value }
+              })
+            }
             style={{ width: 'auto' }}
           >
             <option value="multiple-choice">Multiple Choice</option>
@@ -126,7 +154,9 @@ function MultipleChoiceEdit({
             style={{ width: '100px' }}
             value={question.points}
             onChange={(e) =>
-              setQuestion({ ...question, points: parseInt(e.target.value) })
+              setQuestion((prevState) => {
+                return { ...prevState, points: parseInt(e.target.value) }
+              })
             }
             min="0"
           />
@@ -142,14 +172,18 @@ function MultipleChoiceEdit({
       <textarea
         className="form-control"
         value={question.question}
-        onChange={(e) => setQuestion({ ...question, question: e.target.value })} // Handle changes
+        onChange={(e) =>
+          setQuestion((prevState) => {
+            return { ...prevState, question: e.target.value }
+          })
+        } // Handle changes
         style={{ resize: 'vertical' }}
         rows={3}
       ></textarea>
 
       <h5 className={'mt-4'}>Answers:</h5>
 
-      {/* {question.type === 'true-false' && (
+      {question.type === 'true-false' && (
         <div className="mb-3">
           <div className="form-check form-check-inline">
             <input
@@ -158,8 +192,12 @@ function MultipleChoiceEdit({
               name="trueFalseAnswer"
               id="trueOption"
               value="True"
-              checked={trueFalseAnswer === 'True'}
-              onChange={() => setTrueFalseAnswer('True')}
+              checked={question.answer === 'True'}
+              onChange={() =>
+                setQuestion((prevState) => {
+                  return { ...prevState, answer: 'True' }
+                })
+              }
             />
             <label className="form-check-label" htmlFor="trueOption">
               True
@@ -172,15 +210,19 @@ function MultipleChoiceEdit({
               name="trueFalseAnswer"
               id="falseOption"
               value="False"
-              checked={trueFalseAnswer === 'False'}
-              onChange={() => setTrueFalseAnswer('False')}
+              checked={question.answer === 'False'}
+              onChange={() =>
+                setQuestion((prevState) => {
+                  return { ...prevState, answer: 'False' }
+                })
+              }
             />
             <label className="form-check-label" htmlFor="falseOption">
               False
             </label>
           </div>
         </div>
-      )} */}
+      )}
 
       {question.type !== 'true-false' &&
         answers.map(
@@ -240,4 +282,4 @@ function MultipleChoiceEdit({
   )
 }
 
-export default MultipleChoiceEdit
+export default QuestionEditor

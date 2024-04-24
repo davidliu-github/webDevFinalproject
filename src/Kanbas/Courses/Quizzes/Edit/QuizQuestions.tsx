@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as client from '../client'
-import MultipleChoiceEdit from './MultipleChoiceEdit'
+import QuestionEditor from './QuestionEditor'
 
 export interface Question {
   _id?: string
@@ -18,27 +18,6 @@ interface QuizState {
   quizId: string
   questions: Question[]
   activeQuestionId: string | undefined
-}
-
-function renderSwitch(
-  question: Question,
-  handleUpdateActiveQuestionId: (id: string | undefined) => void,
-) {
-  switch (question.type) {
-    case 'multiple-choice':
-      return (
-        <MultipleChoiceEdit
-          currQuestion={question}
-          handleUpdateActiveQuestionId={handleUpdateActiveQuestionId}
-        />
-      )
-    case 'true-false':
-      return <></>
-    case 'fill-in-blank':
-      return <></>
-    default:
-      return <></>
-  }
 }
 
 function QuizQuestions() {
@@ -116,14 +95,17 @@ function QuizQuestions() {
     }
   }
 
-  // const saveQuizToDB = async () => {
-  //   try {
-  //     const response = await client.updateQuiz(quiz)
-  //     console.log('Updated quiz:', response)
-  //   } catch (err: any) {
-  //     console.log(`Error updating quiz: ${err}`)
-  //   }
-  // }
+  const saveQuizQuestionsToDB = async () => {
+    try {
+      const response = await client.updateQuizQuestions(
+        quizState.quizId,
+        quizState.questions,
+      )
+      console.log('Updated quiz:', response)
+    } catch (err: any) {
+      console.log(`Error updating quiz: ${err}`)
+    }
+  }
 
   React.useEffect(() => {
     findQuestions()
@@ -153,7 +135,10 @@ function QuizQuestions() {
       <div className="question-list">
         {quizState.questions.map((question, index) =>
           question._id === quizState.activeQuestionId ? (
-            renderSwitch(question, handleUpdateActiveQuestionId)
+            <QuestionEditor
+              currQuestion={question}
+              handleUpdateActiveQuestionId={handleUpdateActiveQuestionId}
+            />
           ) : (
             <div key={index} className="question" style={{ border: '1px solid black' }}>
               <div className="d-flex justify-content-between align-items-center">
@@ -178,7 +163,9 @@ function QuizQuestions() {
               <br />
               <span className="question-type">Type: {question.type}</span> <br />
               <span className="question-points">Points: {question.points}</span> <br />
-              <span className="question-choices">Choices: {question.choices}</span>{' '}
+              <span className="question-choices">
+                Choices: {question.choices.toString()}
+              </span>{' '}
               <br />
               <span className="question-answer">Answer: {question.answer}</span>
             </div>
@@ -199,8 +186,12 @@ function QuizQuestions() {
       <span className="question-question-finish-buttons">
         <input type="checkbox" /> Notify users this quiz has changed
         <button className="btn btn-outline-secondary">Cancel</button>
-        <button className="btn btn-outline-secondary">Save & Publish</button>
-        <button className="btn btn-danger">Save</button>
+        <button className="btn btn-outline-secondary" onClick={saveQuizQuestionsToDB}>
+          Save & Publish
+        </button>
+        <button className="btn btn-danger" onClick={saveQuizQuestionsToDB}>
+          Save
+        </button>
       </span>
       <hr />
     </>
