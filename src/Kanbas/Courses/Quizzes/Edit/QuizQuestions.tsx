@@ -1,181 +1,210 @@
-import React, {useState} from 'react'
-import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as client from '../client'
 import MultipleChoiceEdit from './MultipleChoiceEdit'
 
 export interface Question {
-    _id?: string;
-    type: string;
-    editing: boolean;
-    title: string;
-    points: number;
-    question: string;
-    choices: string[];
-    answer: string;
+  _id?: string
+  type: string
+  editing: boolean
+  title: string
+  points: number
+  question: string
+  choices: string[]
+  answer: string
 }
 
 interface QuizState {
-    quizId: string;
-    questions: Question[];
-    activeQuestionId: string | undefined;
+  quizId: string
+  questions: Question[]
+  activeQuestionId: string | undefined
 }
 
-function renderSwitch(question: Question, handleUpdateActiveQuestionId: (id: string | undefined) => void) {
-    switch (question.type) {
-        case 'multiple-choice':
-            return <MultipleChoiceEdit currQuestion={question}
-                                       handleUpdateActiveQuestionId={handleUpdateActiveQuestionId}/>
-        case 'true-false':
-            return <></>
-        case 'fill-in-blank':
-            return <></>
-        default:
-            return <></>
-    }
+function renderSwitch(
+  question: Question,
+  handleUpdateActiveQuestionId: (id: string | undefined) => void,
+) {
+  switch (question.type) {
+    case 'multiple-choice':
+      return (
+        <MultipleChoiceEdit
+          currQuestion={question}
+          handleUpdateActiveQuestionId={handleUpdateActiveQuestionId}
+        />
+      )
+    case 'true-false':
+      return <></>
+    case 'fill-in-blank':
+      return <></>
+    default:
+      return <></>
+  }
 }
 
 function QuizQuestions() {
-    const location = useLocation()
-    const path = location.pathname
-    const previewPath = path.substring(path.indexOf('Kanbas/'), path.indexOf('/Quizzes'))
-    // console.log('@@@@@@ PREVIEW PATH: ', previewPath)
+  const location = useLocation()
+  const path = location.pathname
+  const previewPath = path.substring(path.indexOf('Kanbas/'), path.indexOf('/Quizzes'))
+  // console.log('@@@@@@ PREVIEW PATH: ', previewPath)
 
-    const quizTitle = path.substring(
-        path.indexOf('Quizzes/') + 8,
-        path.indexOf('/edit/questions'),
-    )
+  const quizTitle = path.substring(
+    path.indexOf('Quizzes/') + 8,
+    path.indexOf('/edit/questions'),
+  )
 
-    const [quizState, setQuizState] = useState<QuizState>({
-        quizId: 'Dummy id',
-        questions: [],
-        // The current question id that is being edited (only one question can be edited at a time)
-        // - undefined indicates no question is currently being edited
-        activeQuestionId: undefined
-    });
+  const [quizState, setQuizState] = useState<QuizState>({
+    quizId: 'Dummy id',
+    questions: [],
+    // The current question id that is being edited (only one question can be edited at a time)
+    // - undefined indicates no question is currently being edited
+    activeQuestionId: undefined,
+  })
 
-    const findQuestions = async () => {
-        const response = await client.getQuizByTitle(quizTitle)
-        setQuizState(prevState => ({
-            ...prevState,
-            questions: response.questions,
-            quizId: response._id
-        }));
+  const findQuestions = async () => {
+    const response = await client.getQuizByTitle(quizTitle)
+    setQuizState((prevState) => ({
+      ...prevState,
+      questions: response.questions,
+      quizId: response._id,
+    }))
+  }
+
+  const defaultQuestion: Question = {
+    type: 'multiple-choice',
+    editing: false,
+    title: `multiple choice ${quizState.questions.length + 1}`,
+    points: 1,
+    question: 'How much is 2 + 2?',
+    choices: ['4'],
+    answer: '4',
+  }
+
+  const handleUpdateActiveQuestionId = (id: string | undefined) => {
+    setQuizState((prevState) => ({
+      ...prevState,
+      activeQuestionId: id,
+    }))
+  }
+
+  const handleDeleteQuestion = async (id: string | undefined) => {
+    if (!id) return
+    try {
+      const response = await client.deleteQuizQuestion(quizState.quizId, id)
+      setQuizState((prevState) => ({
+        ...prevState,
+        questions: prevState.questions.filter((question) => question._id !== id),
+      }))
+    } catch (err) {
+      console.log(`Error deleting question: ${err}`)
     }
+  }
 
-    const defaultQuestion: Question = {
-        type: 'multiple-choice',
-        editing: false,
-        title: `multiple choice ${quizState.questions.length + 1}`,
-        points: 1,
-        question: 'How much is 2 + 2?',
-        choices: ['4'],
-        answer: '4',
+  const handleNewQuestion = async () => {
+    try {
+      const response = await client.createQuestion(quizState.quizId, defaultQuestion)
+      if (response && response.questionId) {
+        const newQuestion = { ...defaultQuestion, _id: response.questionId }
+        console.log(newQuestion)
+        setQuizState((prevState) => ({
+          ...prevState,
+          questions: [...prevState.questions, newQuestion],
+          activeQuestionId: response.questionId,
+        }))
+      }
+    } catch (err) {
+      console.log(`Error creating question: ${err}`)
     }
-    React.useEffect(() => {
-        findQuestions()
-    }, [])
+  }
 
-    const handleUpdateActiveQuestionId = (id: string | undefined) => {
-        setQuizState(prevState => ({
-            ...prevState,
-            activeQuestionId: id
-        }));
-    };
+  // const saveQuizToDB = async () => {
+  //   try {
+  //     const response = await client.updateQuiz(quiz)
+  //     console.log('Updated quiz:', response)
+  //   } catch (err: any) {
+  //     console.log(`Error updating quiz: ${err}`)
+  //   }
+  // }
 
-    const handleDeleteQuestion = (id: string | undefined) => {
-        // TODO
-    }
+  React.useEffect(() => {
+    findQuestions()
+  }, [])
 
-    const handleNewQuestion = async () => {
-        try {
-            const response = await client.createQuestion(quizState.quizId, defaultQuestion);
-            if (response && response.questionId) {
-                const newQuestion = {...defaultQuestion, _id: response.questionId};
-                console.log(newQuestion)
-                setQuizState(prevState => ({
-                    ...prevState,
-                    questions: [...prevState.questions, newQuestion],
-                    activeQuestionId: response.questionId
-                }));
-            }
-        } catch (err) {
-            console.log(`Error creating question: ${err}`);
-        }
-    };
-
-    return (
-        <>
+  return (
+    <>
       <span className="quiz-questions-details">
         Points 10 (X) Not Published -Elipses-
       </span>
-            <hr/>
-            <nav className="nav nav-tabs mt-2">
-                <Link style={{color: 'red'}} className="nav-link" to="/Quizzes/blank/edit">
-                    Details
-                </Link>
-                <Link className="nav-link active" to={path}>
-                    Questions
-                </Link>
-                {/* Temporary Until Details page is set up */}
-                <Link
-                    className="nav-link"
-                    to={`/${previewPath}/Quizzes/${quizTitle}/QuizPreview`}
-                >
-                    Question Preview
-                </Link>
-            </nav>
-            <div className="question-list">
-                {quizState.questions.map((question, index) =>
-                    question._id === quizState.activeQuestionId ? (
-                        renderSwitch(question, handleUpdateActiveQuestionId)
-                    ) : (
-                        <div key={index} className="question" style={{border: '1px solid black'}}>
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h3 className="ms-2 mt-2">Question</h3>
-                                <div>
-                                    <button className="btn btn-warning me-2 mt-2"
-                                            onClick={() => handleUpdateActiveQuestionId(question._id)}>
-                                        Edit
-                                    </button>
-                                    <button className="btn btn-danger me-2 mt-2"
-                                            onClick={() => handleDeleteQuestion(question._id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <span className="question-title">Title: {question.title}</span> <br/>
-                            <span className="question-text">Question: {question.question}</span>{' '}
-                            <br/>
-                            <span className="question-type">Type: {question.type}</span> <br/>
-                            <span className="question-points">Points: {question.points}</span> <br/>
-                            <span className="question-choices">Choices: {question.choices}</span>{' '}
-                            <br/>
-                            <span className="question-answer">Answer: {question.answer}</span>
-                        </div>
-                    ),
-                )}
-                {/* EDITTING COMPONENTS FOR TESTING, NEED TO REMOVE TODO
+      <hr />
+      <nav className="nav nav-tabs mt-2">
+        <Link style={{ color: 'red' }} className="nav-link" to="/Quizzes/blank/edit">
+          Details
+        </Link>
+        <Link className="nav-link active" to={path}>
+          Questions
+        </Link>
+        {/* Temporary Until Details page is set up */}
+        <Link
+          className="nav-link"
+          to={`/${previewPath}/Quizzes/${quizTitle}/QuizPreview`}
+        >
+          Question Preview
+        </Link>
+      </nav>
+      <div className="question-list">
+        {quizState.questions.map((question, index) =>
+          question._id === quizState.activeQuestionId ? (
+            renderSwitch(question, handleUpdateActiveQuestionId)
+          ) : (
+            <div key={index} className="question" style={{ border: '1px solid black' }}>
+              <div className="d-flex justify-content-between align-items-center">
+                <h3 className="ms-2 mt-2">Question</h3>
+                <div>
+                  <button
+                    className="btn btn-warning me-2 mt-2"
+                    onClick={() => handleUpdateActiveQuestionId(question._id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-danger me-2 mt-2"
+                    onClick={() => handleDeleteQuestion(question._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <span className="question-title">Title: {question.title}</span> <br />
+              <span className="question-text">Question: {question.question}</span>{' '}
+              <br />
+              <span className="question-type">Type: {question.type}</span> <br />
+              <span className="question-points">Points: {question.points}</span> <br />
+              <span className="question-choices">Choices: {question.choices}</span>{' '}
+              <br />
+              <span className="question-answer">Answer: {question.answer}</span>
+            </div>
+          ),
+        )}
+        {/* EDITTING COMPONENTS FOR TESTING, NEED TO REMOVE TODO
         <MultipleChoiceEdit currQuestion={defaultQuestion} />
         */}
-            </div>
-            <span className="quiz-question-buttons">
+      </div>
+      <span className="quiz-question-buttons">
         <button className="btn btn-outline-secondary" onClick={handleNewQuestion}>
           New Question
         </button>
         <button className="btn btn-outline-secondary">New Question Group</button>
         <button className="btn btn-outline-secondary">Find Questions</button>
       </span>
-            <hr/>
-            <span className="question-question-finish-buttons">
-        <input type="checkbox"/> Notify users this quiz has changed
+      <hr />
+      <span className="question-question-finish-buttons">
+        <input type="checkbox" /> Notify users this quiz has changed
         <button className="btn btn-outline-secondary">Cancel</button>
         <button className="btn btn-outline-secondary">Save & Publish</button>
         <button className="btn btn-danger">Save</button>
       </span>
-            <hr/>
-        </>
-    )
+      <hr />
+    </>
+  )
 }
 
 export default QuizQuestions

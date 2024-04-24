@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import QuizDetails from '../QuizDetails'
 import * as client from '../client'
-import {Question} from "./QuizQuestions";
+import { Question } from './QuizQuestions'
 
-function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { currQuestion: Question, handleUpdateActiveQuestionId: (id: string | undefined) => void }) {
+function MultipleChoiceEdit({
+  currQuestion,
+  handleUpdateActiveQuestionId,
+}: {
+  currQuestion: Question
+  handleUpdateActiveQuestionId: (id: string | undefined) => void
+}) {
   const [question, setQuestion] = useState({
     _id: currQuestion._id,
     editing: currQuestion.editing,
@@ -25,11 +31,8 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       isCorrect: choice === currQuestion.answer,
     })),
   )
-  const [quiz, setQuiz] = useState<any>({
-    _id: '',
-    title: '',
-    questions: [],
-  })
+
+  const [quiz, setQuiz] = useState<any>({})
 
   const findQuiz = async () => {
     if (!currQuestion._id) return
@@ -39,8 +42,11 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
 
   const updateQuiz = async () => {
     try {
-      const newQuestions = [...quiz[0].questions, question]
-      await client.updateQuiz({ ...quiz[0], questions: newQuestions })
+      const newQuestions = quiz.questions.map((q: any) =>
+        q._id === question._id ? question : q,
+      )
+      await client.updateQuiz({ ...quiz, questions: newQuestions })
+      setQuiz({ ...quiz, questions: newQuestions })
       handleUpdateActiveQuestionId(undefined)
     } catch (err: any) {
       console.log(`Error updating quiz: ${err}`)
@@ -119,7 +125,9 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
             className="form-control"
             style={{ width: '100px' }}
             value={question.points}
-            onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setQuestion({ ...question, points: parseInt(e.target.value) })
+            }
             min="0"
           />
         </div>
@@ -219,8 +227,8 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
 
       <div className="d-flex justify-content-start mt-3">
         <button
-            className="btn btn-outline-secondary me-2"
-            onClick={() => handleUpdateActiveQuestionId(undefined)}
+          className="btn btn-outline-secondary me-2"
+          onClick={() => handleUpdateActiveQuestionId(undefined)}
         >
           Cancel
         </button>
