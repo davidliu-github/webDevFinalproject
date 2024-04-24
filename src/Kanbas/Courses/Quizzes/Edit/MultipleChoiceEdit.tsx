@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import QuizDetails from '../QuizDetails'
 import * as client from '../client'
+import {Question} from "./QuizQuestions";
 
-function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
+function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { currQuestion: Question, handleUpdateActiveQuestionId: (id: string | undefined) => void }) {
   const [question, setQuestion] = useState({
     _id: currQuestion._id,
     editing: currQuestion.editing,
@@ -40,6 +41,7 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
     try {
       const newQuestions = [...quiz[0].questions, question]
       await client.updateQuiz({ ...quiz[0], questions: newQuestions })
+      handleUpdateActiveQuestionId(undefined)
     } catch (err: any) {
       console.log(`Error updating quiz: ${err}`)
     }
@@ -117,7 +119,7 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
             className="form-control"
             style={{ width: '100px' }}
             value={question.points}
-            onChange={(e) => setQuestion({ ...question, points: e.target.value })}
+            onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value) })}
             min="0"
           />
         </div>
@@ -216,7 +218,12 @@ function MultipleChoiceEdit({ currQuestion }: { currQuestion: any }) {
       )}
 
       <div className="d-flex justify-content-start mt-3">
-        <button className="btn btn-outline-secondary me-2">Cancel</button>
+        <button
+            className="btn btn-outline-secondary me-2"
+            onClick={() => handleUpdateActiveQuestionId(undefined)}
+        >
+          Cancel
+        </button>
         <button className="btn btn-danger" onClick={updateQuiz}>
           Update Question
         </button>
