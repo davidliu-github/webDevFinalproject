@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import QuizDetails from '../QuizDetails'
 import * as client from '../client'
 import {Question} from "./QuizQuestions";
+import ReactQuill from 'react-quill';
+import "react-quill/dist/quill.snow.css";
 
 function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { currQuestion: Question, handleUpdateActiveQuestionId: (id: string | undefined) => void }) {
   const [question, setQuestion] = useState({
@@ -60,6 +62,10 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
     }
   }
 
+  const handleQuestionChange = (e: string) => {
+    setQuestion({ ...question, question: e })
+  };
+  
   const addAnswer = () => {
     setAnswers([...answers, { value: '', isCorrect: false }])
   }
@@ -130,14 +136,9 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       </div>
 
       <h5>Question:</h5>
-
-      <textarea
-        className="form-control"
-        value={question.question}
-        onChange={(e) => setQuestion({ ...question, question: e.target.value })} // Handle changes
-        style={{ resize: 'vertical' }}
-        rows={3}
-      ></textarea>
+    
+        <ReactQuill theme="snow" value={question.question} onChange={handleQuestionChange}
+        />
 
       <h5 className={'mt-4'}>Answers:</h5>
 
