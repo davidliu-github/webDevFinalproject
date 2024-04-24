@@ -12,42 +12,32 @@ import ListItem from './ListItem'
 import { Link, useLocation } from "react-router-dom";
 function QuizzesDetails() {
 
-  const { quizId } = useParams()
+  const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
 
-  const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
-  const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
+  const [quiz, setQuiz] = useState(retQuiz);
+
+  console.log('quizzes details reran', quiz)
   const dispatch = useDispatch()
-  useEffect(() => {
-    client
-      .getQuizzes()
-      .then((quizzes) => dispatch(setQuizzes(quizzes)))
-  }, [])
-  const handleAddQuiz = () => {
-    client.createQuiz(quiz).then((quiz) => {
-      dispatch(addQuiz(quiz))
-    })
-  }
+
   const handleUpdateTrue = async () => {
     const updatedQuiz = { ...quiz, published: true };
     const status = await client.updateQuiz(updatedQuiz);
     dispatch(updateQuiz(updatedQuiz));
+    setQuiz(updatedQuiz);
+
   };
 
   const handleUpdateFalse = async () => {
     const updatedQuiz = { ...quiz, published: false };
     const status = await client.updateQuiz(updatedQuiz);
     dispatch(updateQuiz(updatedQuiz));
+    setQuiz(updatedQuiz);
+
   };
-  const handleDeleteQuiz = (quizId: string) => {
-    client.deleteQuiz(quizId).then((status) => {
-      dispatch(deleteQuiz(quizId))
-    })
-  }
   function refreshPage(){ 
     window.location.reload();
 }
 
-  const pubColor = 'btn-' + (quiz.published ? 'danger' : 'success');
   const { pathname } = useLocation();
   const lastSlashIndex = pathname.lastIndexOf("/");
   const substringBeforeLastSlash = pathname.substring(0, lastSlashIndex);
@@ -55,17 +45,14 @@ function QuizzesDetails() {
     <div className="me-4">
       <div className="col-md-12 flex-fill mt-4">
         <div style={{ float: 'right' }}>
-          <Link to={pathname} onClick={refreshPage}>
             <button
-              className={`button btn ${pubColor}`}
+              className={`button btn ` + 'btn-' + (quiz.published ? 'danger' : 'success')}
               onClick={() => { quiz.published ? handleUpdateFalse() : handleUpdateTrue() }}>
-              {quiz.published ? <FaCheckCircle /> : <FaBan />}
-              {quiz.published ? "Unpublish" : 'Publish'}
+              {quiz.published ? <FaBan /> : <FaCheckCircle />}
+              {quiz.published ? "Unpublish" : "Publish"}
             </button>
-          </Link>
           <button
-            className="button btn btn-secondary"
-            onClick={() => handleAddQuiz()}>
+            className="button btn btn-secondary">
             <Link to={substringBeforeLastSlash + "/preview"}>Preview</Link>
           </button>
           <button
