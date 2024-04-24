@@ -90,8 +90,10 @@ const updateQuiz = async () => {
   setQuizzes(
     courses.map((q) => {
       if (q._id === quiz._id) {
+        console.log('success!')
         return course
       } else {
+        console.log('fail womp womp')
         return q
       }
     }),
