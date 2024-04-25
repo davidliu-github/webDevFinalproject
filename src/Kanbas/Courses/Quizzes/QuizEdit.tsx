@@ -120,11 +120,9 @@ function QuizEdit() {
   ) => {
     setValue(e.target.checked)
   }
-
   const handleCancel = () => {
     navigation(-1)
   }
-
   return (
     <div>
       Quiz Instructions
@@ -173,6 +171,14 @@ function QuizEdit() {
         value={assignmentGroup}
         onChange={(e) => handleChange(e, setAssignmentGroup)}
       >
+        type="number" value={points}
+        onChange={(e: any) => handleChange(e, setPoints)}
+      </select>
+      <label>Assignment Group</label>
+      <select
+        value={assignmentGroup}
+        onChange={(e) => handleChange(e, setAssignmentGroup)}
+      >
         <option value="Quizzes">Quizzes</option>
         <option value="Exams">Exams</option>
         <option value="Assignments">Assignments</option>
@@ -185,6 +191,7 @@ function QuizEdit() {
         onChange={(e) => handleChangeCheckBox(e, setShuffleAnswers)}
       />
       <label>Time Limit</label>
+      <label>Time Limit</label>
       <input
         type="number"
         value={timeLimit}
@@ -192,10 +199,17 @@ function QuizEdit() {
       />
       <label>Multiple Attempts</label>
       <input
+        type="number"
+        value={timeLimit}
+        onChange={(e: any) => handleChange(e, setTimeLimit)}
+      />
+      <label>Multiple Attempts</label>
+      <input
         type="checkbox"
         checked={multipleAttempts}
         onChange={(e) => handleChangeCheckBox(e, setMultipleAttempts)}
       />
+      <label>Show Correct Answers</label>
       <label>Show Correct Answers</label>
       <input
         type="checkbox"
@@ -211,17 +225,28 @@ function QuizEdit() {
         onChange={(e) => handleChange(e, setAccessCode)}
       />
       <label>One Question At A Time</label>
+      <label>Access Code</label>
+      <input
+        type="text"
+        className="form-control"
+        id="input1"
+        value={accessCode}
+        onChange={(e) => handleChange(e, setAccessCode)}
+      />
+      <label>One Question At A Time</label>
       <input
         type="checkbox"
         checked={oneQuestionAtATime}
         onChange={(e) => handleChangeCheckBox(e, setOneQuestionAtATime)}
       />
       <label>Webcam Required</label>
+      <label>Webcam Required</label>
       <input
         type="checkbox"
         checked={webCamRequired}
         onChange={(e) => handleChangeCheckBox(e, setWebCamRequired)}
       />
+      <label>Lock Question</label>
       <label>Lock Question</label>
       <input
         type="checkbox"
@@ -235,6 +260,18 @@ function QuizEdit() {
         onChange={(e) => handleChange(e, setDueDate)}
       />
       <label>Available Date</label>
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => handleChange(e, setDueDate)}
+      />
+      <label>Available Date</label>
+      <input
+        type="date"
+        value={availableDate}
+        onChange={(e) => handleChange(e, setAvailableDate)}
+      />
+      <label>Until Date</label>
       <input
         type="date"
         value={availableDate}

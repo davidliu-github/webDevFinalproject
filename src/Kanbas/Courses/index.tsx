@@ -14,7 +14,9 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import QuizDetails from './Quizzes/QuizDetails'
 import QuizEdit from './Quizzes/QuizEdit'
-import QuizPreview from './Quizzes/QuizPreview'
+import QuizQuestions from './Quizzes/Edit/QuizQuestions'
+import QuizPreview from './Quizzes/Edit/QuizPreview'
+
 function Courses() {
   const { courseId } = useParams()
   const COURSES_API = 'http://localhost:4000/api/courses'
@@ -100,11 +102,13 @@ function Courses() {
               element={<h2>Assignment Editor</h2>}
             />
             <Route path="Grades" element={<h2>Grades</h2>} />
-            <Route path="Quizzes" element={<Quizzes/>} />
-            <Route path="Quizzes/:title/details" element={<QuizDetails/>} />
-            <Route path="Quizzes/:title/preview" element={<QuizPreview/>} />
-            <Route path="Quizzes/:title/edit" element={<QuizEdit/>} />
+            <Route path="Quizzes" element={<Quizzes />} />
+            <Route path="Quizzes/:title/details" element={<QuizDetails />} />
+            <Route path="Quizzes/:title/preview" element={<QuizPreview />} />
+            <Route path="Quizzes/:title/edit" element={<QuizEdit />} />
+            <Route path="Quizzes/:title/edit/questions" element={<QuizQuestions />} />
             <Route path="People" element={<h2>People</h2>} />
+            <Route path="Quizzes/:title/QuizPreview" element={<QuizPreview />} />
           </Routes>
         </div>
       </div>
