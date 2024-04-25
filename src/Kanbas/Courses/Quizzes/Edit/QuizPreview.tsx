@@ -2,17 +2,18 @@ import React, { useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as client from '../client'
 import { FaPencilAlt, FaCaretRight, FaExclamationCircle } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import { KanbasState } from '../../../store'
 
 function QuizPreview() {
   const location = useLocation()
   const path = location.pathname
   console.log('@@@@@@ PATH: ', path)
-
+  const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
+  console.log('@@@@@ QUIZ: ', retQuiz)
   // Will need to find out the path to get the exact title for the preview
-  const quizTitle = path.substring(
-    path.indexOf('/Quizzes/') + 9,
-    path.indexOf('/QuizPreview'),
-  )
+  const quizTitle = retQuiz.title;
+  
   console.log('@@@@@@ QUIZ TITLE: ', quizTitle)
   const [questions, setQuestions] = useState<any[]>([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -21,7 +22,7 @@ function QuizPreview() {
 
   // will not set questions because of invalid quiztitle
   const findQuestions = async () => {
-    const response = await client.getQuizByTitle(quizTitle)
+    const response = await client.getQuiz(retQuiz._id)
     console.log('@@@@@@ RESPONSE: ', response)
     setQuestions(response.questions)
   }

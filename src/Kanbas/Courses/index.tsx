@@ -108,7 +108,7 @@ function Courses() {
             <Route path="Quizzes/:title/edit" element={<QuizEdit />} />
             <Route path="Quizzes/:title/edit/questions" element={<QuizQuestions />} />
             <Route path="People" element={<h2>People</h2>} />
-            <Route path="Quizzes/:title/QuizPreview" element={<QuizPreview />} />
+            <Route path="Quizzes/:title/preview" element={<QuizPreview />} />
           </Routes>
         </div>
       </div>

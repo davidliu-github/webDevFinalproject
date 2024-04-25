@@ -4,6 +4,7 @@ const QUIZZES_API = `${API_BASE}/api/quizzes`
 
 export const getQuiz = async (id: any) => {
   const response = await axios.get(`${QUIZZES_API}/${id}`)
+  return response.data
 }
 export const getQuizByTitle = async (quizTitle: any) => {
   const response = await axios.get(`${QUIZZES_API}/title/${quizTitle}`)

@@ -31,8 +31,18 @@ function QuizzesDetails() {
     dispatch(updateQuiz(updatedQuiz))
     setQuiz(updatedQuiz)
   }
-  function refreshPage() {
-    window.location.reload()
+  
+  function formatDate(x: Date): string {
+    // Extract year, month, and day from the Date object
+    const date = new Date(x);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: month is zero-based
+    const day = (date.getDate() + 1).toString().padStart(2, '0');
+
+    // Construct the formatted date string
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
   }
 
   const { pathname } = useLocation()
@@ -209,7 +219,7 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex justify-content-start">{quiz.dueDate}</div>
+            <div className="d-flex justify-content-start">{formatDate(quiz.dueDate)}</div>
           </div>
           <div className="col"></div>
         </div>
@@ -231,7 +241,7 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex justify-content-start">{quiz.untilDate}</div>
+            <div className="d-flex justify-content-start">{formatDate(quiz.untilDate)}</div>
           </div>
           <div className="col"></div>
         </div>
@@ -265,16 +275,16 @@ function QuizzesDetails() {
         <hr></hr>
         <div className="row">
           <div className="col-3">
-            <div className="d-flex">{quiz.dueDate}</div>
+            <div className="d-flex">{formatDate(quiz.dueDate)}</div>
           </div>
           <div className="col-3">
             <div className="d-flex">Everyone</div>
           </div>
           <div className="col-3">
-            <div className="d-flex">{quiz.availableDate}</div>
+            <div className="d-flex">{formatDate(quiz.availableDate)}</div>
           </div>
           <div className="col-3">
-            <div className="d-flex">{quiz.untilDate}</div>
+            <div className="d-flex">{formatDate(quiz.untilDate)}</div>
           </div>
         </div>
         <hr></hr>
