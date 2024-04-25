@@ -12,6 +12,26 @@ import ListItem from './ListItem'
 function QuizzesList() {
   const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
   const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
+  const newQuiz = {
+    title: "New Quiz",
+    quizType: "GRADED_QUIZ",
+    points: 0,
+    assignmentGroup: "Quizzes",
+    shuffleAnswers: true,
+    timeLimit: 20,
+    multipleAttempts: false,
+    showCorrectAnswers: false,
+    accessCode: "1234",
+    oneQuestionAtATime: true,
+    webcamRequired: false,
+    lockQuestion: false,
+    dueDate: "2024-11-11",
+    availableDate: "2024-11-11",
+    untilDate: "2024-11-11",
+    published: false,
+    numQuestions: 0,
+    questions: [],
+  };
   const dispatch = useDispatch()
   useEffect(() => {
     client
@@ -19,7 +39,7 @@ function QuizzesList() {
       .then((quizzes) => dispatch(setQuizzes(quizzes)))
   }, [])
   const handleAddQuiz = () => {
-    client.createQuiz(quiz).then((quiz) => {
+    client.createQuiz(newQuiz).then((quiz) => {
       dispatch(addQuiz(quiz))
     })
   }
