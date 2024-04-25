@@ -14,8 +14,6 @@ type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 function QuizEdit() {
     const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
 
-    console.log('ret quiz u bastard', retQuiz)
-
     const location = useLocation()
 
     const navigation = useNavigate()
@@ -55,6 +53,20 @@ function QuizEdit() {
     const [quizInstructions, setQuizInstructions] = useState(
         retQuiz.quizInstructions,
     )
+
+
+    function formatDate(x: Date): string {
+        // Extract year, month, and day from the Date object
+        const date = new Date(x);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: month is zero-based
+        const day = (date.getDate() + 1).toString().padStart(2, '0');
+
+        // Construct the formatted date string
+        const formattedDate = `${year}-${month}-${day}`;
+
+        return formattedDate;
+    }
 
     const handleUpdatePublish = async () => {
         const updatedQuiz = {
@@ -293,21 +305,11 @@ function QuizEdit() {
 
                 <div className="d-flex justify-content-between align-items-center mt-3 ms-5 me-5 text-nowrap">
                     <div className={"d-flex align-items-center"}>
-                        <label className={"me-1"}>Due Date</label>
-                        <input
-                            className={"form-control"}
-                            type="date"
-                            value={dueDate}
-                            onChange={(e) => handleChange(e, setDueDate)}
-                        />
-                    </div>
-
-                    <div className={"d-flex align-items-center"}>
                         <label className={"me-1"}>Available Date</label>
                         <input
                             className={"form-control"}
                             type="date"
-                            value={availableDate}
+                            value={formatDate(availableDate)}
                             onChange={(e) => handleChange(e, setAvailableDate)}
                         />
                     </div>
@@ -317,8 +319,18 @@ function QuizEdit() {
                         <input
                             className={"form-control"}
                             type="date"
-                            value={untilDate}
+                            value={formatDate(untilDate)}
                             onChange={(e) => handleChange(e, setUntilDate)}
+                        />
+                    </div>
+
+                    <div className={"d-flex align-items-center"}>
+                        <label className={"me-1"}>Due Date</label>
+                        <input
+                            className={"form-control"}
+                            type="date"
+                            value={formatDate(dueDate)}
+                            onChange={(e) => handleChange(e, setDueDate)}
                         />
                     </div>
                 </div>
