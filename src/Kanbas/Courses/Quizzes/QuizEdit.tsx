@@ -14,7 +14,6 @@ type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 function QuizEdit() {
   const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
 
-  console.log('ret quiz u bastard',retQuiz)
 
   const location = useLocation()
 
@@ -55,6 +54,19 @@ function QuizEdit() {
   const [quizInstructions, setQuizInstructions] = useState(
     retQuiz.quizInstructions,
   )
+
+  function formatDate(x: Date): string {
+    // Extract year, month, and day from the Date object
+    const date = new Date(x);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: month is zero-based
+    const day = (date.getDate()+1).toString().padStart(2, '0');
+    
+    // Construct the formatted date string
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+}
 
   const handleUpdatePublish = async () => {
     const updatedQuiz = {
@@ -267,35 +279,23 @@ function QuizEdit() {
         checked={lockQuestion}
         onChange={(e) => handleChangeCheckBox(e, setLockQuestion)}
       />
+      <label>Available Date</label>
+      <input
+        type="date"
+        value={formatDate(availableDate)}
+        onChange={(e) => handleChange(e, setAvailableDate)}
+      />
+      <label>Until Date</label>
+      <input
+        type="date"
+        value={formatDate(untilDate)}
+        onChange={(e) => handleChange(e, setUntilDate)}
+      />
       <label>Due Date</label>
       <input
         type="date"
-        value={dueDate}
+        value={formatDate(dueDate)}
         onChange={(e) => handleChange(e, setDueDate)}
-      />
-      <label>Available Date</label>
-      <input
-        type="date"
-        value={dueDate}
-        onChange={(e) => handleChange(e, setDueDate)}
-      />
-      <label>Available Date</label>
-      <input
-        type="date"
-        value={availableDate}
-        onChange={(e) => handleChange(e, setAvailableDate)}
-      />
-      <label>Until Date</label>
-      <input
-        type="date"
-        value={availableDate}
-        onChange={(e) => handleChange(e, setAvailableDate)}
-      />
-      <label>Until Date</label>
-      <input
-        type="date"
-        value={untilDate}
-        onChange={(e) => handleChange(e, setUntilDate)}
       />
       <button onClick={handleCancel}>Cancel</button>
       <button onClick={handleUpdatePublish}>Save and Publish</button>
