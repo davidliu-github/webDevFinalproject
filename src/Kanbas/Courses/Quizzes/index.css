@@ -128,3 +128,6 @@
   line-height: 1.25; /* Decreased line height to vertically center the text */
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Bootstrap's default transition */
 }
+
+.editHeader {
+}

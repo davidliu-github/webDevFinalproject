@@ -7,54 +7,59 @@ import { setQuiz, updateQuiz } from './reducer.js'
 import { time } from 'console'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { FaBan, FaCheckCircle } from 'react-icons/fa'
 
 type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 
 function QuizEdit() {
-  const navigation = useNavigate()
+  const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
+
+  console.log('ret quiz u bastard',retQuiz)
 
   const location = useLocation()
+
+  const navigation = useNavigate()
 
   const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
   const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
   const dispatch = useDispatch()
 
-  const [titleInputValue, setTitleInputValue] = useState(location.state.quiz.title)
-  const [quizType, setQuizType] = useState(location.state.quiz.quizType)
-  const [points, setPoints] = useState(location.state.quiz.points)
+  const [titleInputValue, setTitleInputValue] = useState(retQuiz.title)
+  const [quizType, setQuizType] = useState(retQuiz.quizType)
+  const [points, setPoints] = useState(retQuiz.points)
   const [assignmentGroup, setAssignmentGroup] = useState(
-    location.state.quiz.assignmentGroup,
+    retQuiz.assignmentGroup,
   )
   const [shuffleAnswers, setShuffleAnswers] = useState(
-    location.state.quiz.shuffleAnswers,
+    retQuiz.shuffleAnswers,
   )
-  const [timeLimit, setTimeLimit] = useState(location.state.quiz.timeLimit)
+  const [timeLimit, setTimeLimit] = useState(retQuiz.timeLimit)
   const [multipleAttempts, setMultipleAttempts] = useState(
-    location.state.quiz.multipleAttempts,
+    retQuiz.multipleAttempts,
   )
   const [showCorrectAnswers, setShowCorrectAnswers] = useState(
-    location.state.quiz.showCorrectAnswers,
+    retQuiz.showCorrectAnswers,
   )
-  const [accessCode, setAccessCode] = useState(location.state.quiz.accessCode)
+  const [accessCode, setAccessCode] = useState(retQuiz.accessCode)
   const [oneQuestionAtATime, setOneQuestionAtATime] = useState(
-    location.state.quiz.oneQuestionAtATime,
+    retQuiz.oneQuestionAtATime,
   )
   const [webCamRequired, setWebCamRequired] = useState(
-    location.state.quiz.webCamRequired,
+    retQuiz.webCamRequired,
   )
-  const [lockQuestion, setLockQuestion] = useState(location.state.quiz.lockQuestion)
-  const [dueDate, setDueDate] = useState(location.state.quiz.dueDate)
-  const [availableDate, setAvailableDate] = useState(location.state.quiz.availableDate)
-  const [untilDate, setUntilDate] = useState(location.state.quiz.untilDate)
-  const [published, setPublished] = useState(location.state.quiz.published)
+  const [lockQuestion, setLockQuestion] = useState(retQuiz.lockQuestion)
+  const [dueDate, setDueDate] = useState(retQuiz.dueDate)
+  const [availableDate, setAvailableDate] = useState(retQuiz.availableDate)
+  const [untilDate, setUntilDate] = useState(retQuiz.untilDate)
+  const [published, setPublished] = useState(retQuiz.published)
   const [quizInstructions, setQuizInstructions] = useState(
-    location.state.quiz.quizInstructions,
+    retQuiz.quizInstructions,
   )
 
   const handleUpdatePublish = async () => {
     const updatedQuiz = {
-      ...location.state.quiz,
-      _id: location.state.quiz._id,
+      ...retQuiz,
+      _id: retQuiz._id,
       quizType: quizType,
       points: points,
       assignmentGroup: assignmentGroup,
@@ -71,7 +76,7 @@ function QuizEdit() {
       untilDate: untilDate,
       published: true,
       title: titleInputValue,
-      questions: location.state.quiz.questions,
+      questions: retQuiz.questions,
       quizInstructions: quizInstructions,
     }
     const status = await client.updateQuiz(updatedQuiz)
@@ -81,8 +86,8 @@ function QuizEdit() {
 
   const handleUpdateSave = async () => {
     const updatedQuiz = {
-      ...location.state.quiz,
-      _id: location.state.quiz._id,
+      ...retQuiz,
+      _id: retQuiz._id,
       quizType: quizType,
       points: points,
       assignmentGroup: assignmentGroup,
@@ -97,9 +102,9 @@ function QuizEdit() {
       dueDate: dueDate,
       availableDate: availableDate,
       untilDate: untilDate,
-      published: location.state.quiz.published,
+      published: retQuiz.published,
       title: titleInputValue,
-      questions: location.state.quiz.questions,
+      questions: retQuiz.questions,
       quizInstructions: quizInstructions,
     }
     const status = await client.updateQuiz(updatedQuiz)
@@ -125,34 +130,42 @@ function QuizEdit() {
   }
   const path = location.pathname
   return (
-    <div>
-      Quiz Instructions
-      <ReactQuill
-        theme="snow"
-        value={quizInstructions}
-        onChange={setQuizInstructions}
-      />
-      {console.log(quizInstructions)}
-      Points {location.state.quiz.points}
-      {console.log(location.state.quiz.points)}
-      {location.state.published ? 'Published' : 'Not Published'}
+    <div style={{display:'flex', flexDirection:'column'}}>
+      <div className='editHeader' style={{display:'flex', justifyContent:'flex-end'}}>
+      <div>
+      Points {retQuiz.points}
+      </div>
+      <div style={{marginLeft:'10px', display:'flex', alignItems:'center' }}>
+      <div>
+      {quiz.published ? <FaCheckCircle/> : <FaBan /> }
+      </div>
+      <div  style={{marginLeft:'4px'}}>
+      {retQuiz.published ? 'Published' : 'Not Published'}
+      </div>
+      </div>
+      </div>
+      <div>
       <nav className="nav nav-tabs mt-2">
-        <Link className="nav-link active" to="/Quizzes/blank/edit">
+        <a className="nav-link active">
           Details
-        </Link>
+        </a>
         <Link style={{ color: 'red' }} className="nav-link" to={path + '/questions'}>
           Questions
         </Link>
       </nav>
-      <label htmlFor="input1" className="form-label">
-        Title
-      </label>
+
       <input
         type="text"
         className="form-control"
         id="input1"
         value={titleInputValue}
         onChange={(e) => handleChange(e, setTitleInputValue)}
+      />
+        Quiz Instructions
+        <ReactQuill
+        theme="snow"
+        value={quizInstructions}
+        onChange={setQuizInstructions}
       />
       <label>Quiz Type</label>
       <select value={quizType} onChange={(e) => handleChange(e, setQuizType)}>
@@ -287,6 +300,7 @@ function QuizEdit() {
       <button onClick={handleCancel}>Cancel</button>
       <button onClick={handleUpdatePublish}>Save and Publish</button>
       <button onClick={handleUpdateSave}>Save</button>
+      </div>
     </div>
   )
 }

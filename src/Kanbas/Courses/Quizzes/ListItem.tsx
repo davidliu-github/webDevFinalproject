@@ -94,7 +94,8 @@ const ListItem: React.FC<Quiz> = (props) => {
               onClick={() => {
                 navigate(pathname + '/' + props.quiz.title + '/edit', {
                   state: { quiz: props.quiz },
-                })
+                });
+                (props.setQuiz())
               }}
             >
               Edit
