@@ -59,7 +59,7 @@ const ListItem: React.FC<Quiz> = (props) => {
   const [showPopup, setShowPopup] = React.useState(false)
   const { availableDate, untilDate, dueDate, points, questions, published, title } =
     props.quiz
-  const questions1 = questions.toString()
+  //const questions1 = questions.toString() TODO
   const navigate = useNavigate()
 
   return (
@@ -109,7 +109,7 @@ const ListItem: React.FC<Quiz> = (props) => {
       <br />
       <span className="ms-4 fw-bold"> {availabilityStatus + '  '} </span>{' '}
       {availabilityDate + '  '}
-      <b>Due</b> {dueDate + '  '} {points + '  '} pts Questions {questions1}
+      <b>Due</b> {dueDate + '  '} {points + '  '} pts Questions {/*questions1 TODO*/}
     </li>
   )
 }
