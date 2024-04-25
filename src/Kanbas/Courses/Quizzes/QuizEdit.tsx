@@ -123,6 +123,7 @@ function QuizEdit() {
   const handleCancel = () => {
     navigation(-1)
   }
+  const path = location.pathname
   return (
     <div>
       Quiz Instructions
@@ -139,7 +140,7 @@ function QuizEdit() {
         <Link className="nav-link active" to="/Quizzes/blank/edit">
           Details
         </Link>
-        <Link style={{ color: 'red' }} className="nav-link" to="/Labs/a3">
+        <Link style={{ color: 'red' }} className="nav-link" to={path + '/questions'}>
           Questions
         </Link>
       </nav>
