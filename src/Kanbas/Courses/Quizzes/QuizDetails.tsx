@@ -67,9 +67,6 @@ function QuizzesDetails() {
           <button className="button btn btn-secondary">
             <Link to={substringBeforeLastSlash + '/edit'}>Edit</Link>
           </button>
-          <button className="btn btn-secondary color-lightgray ">
-            <FaEllipsisV className="color-black" />
-          </button>
         </div>
         <br />
         <br />

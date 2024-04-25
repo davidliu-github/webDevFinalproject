@@ -21,12 +21,12 @@ type QuizTemplate = {
   oneQuestionAtATime: boolean
   webcamRequired: boolean
   lockQuestion: boolean
-  dueDate: string
-  availableDate: string
-  untilDate: string
+  dueDate: Date
+  availableDate: Date
+  untilDate: Date
   published: boolean
   title: string
-  questions: Number
+  questions: Array<any>
 }
 
 type Quiz = {
@@ -55,11 +55,22 @@ const ListItem: React.FC<Quiz> = (props) => {
   } else if (currentDate >= availableDate1 && currentDate <= untilDate1) {
     availabilityStatus = 'Available'
   }
+  function formatDate(x: Date): string {
+    // Extract year, month, and day from the Date object
+    const date = new Date(x);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: month is zero-based
+    const day = (date.getDate() + 1).toString().padStart(2, '0');
 
+    // Construct the formatted date string
+    const formattedDate = `${year}-${month}-${day}`;
+
+    return formattedDate;
+  }
   const [showPopup, setShowPopup] = React.useState(false)
   const { availableDate, untilDate, dueDate, points, questions, published, title } =
     props.quiz
-  //const questions1 = questions.toString() TODO
+  const lenQuestions = questions.length - 1 
   const navigate = useNavigate()
 
   return (
@@ -110,7 +121,7 @@ const ListItem: React.FC<Quiz> = (props) => {
       <br />
       <span className="ms-4 fw-bold"> {availabilityStatus + '  '} </span>{' '}
       {availabilityDate + '  '}
-      <b>Due</b> {dueDate + '  '} {points + '  '} pts Questions {/*questions1 TODO*/}
+      <b>Due</b> {formatDate(dueDate) + '  '} {points + '  '} pts {lenQuestions + '  '} Questions 
     </li>
   )
 }

@@ -43,10 +43,6 @@ function QuizzesList() {
             onClick={() => handleAddQuiz()}>
             + Quiz
           </button>
-
-          <button className="btn btn-secondary color-lightgray ">
-            <FaEllipsisV className="color-black" />
-          </button>
         </div>
         <br />
         <br />
