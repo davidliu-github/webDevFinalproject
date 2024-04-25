@@ -36,3 +36,15 @@ export const getQuizByQuestionId = async (questionId: string) => {
   const response = await axios.get(`${QUIZZES_API}/questions/${questionId}`)
   return response.data
 }
+
+export const updateQuizQuestions = async (quizId: string, questions: any) => {
+  const response = await axios.put(`${QUIZZES_API}/${quizId}/questions`, questions)
+  return response.data
+}
+
+export const deleteQuizQuestion = async (quizId: string, questionId: string) => {
+  const response = await axios.delete(
+    `${QUIZZES_API}/${quizId}/questions/${questionId}`,
+  )
+  return response.data
+}

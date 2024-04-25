@@ -1,11 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react'
 import QuizDetails from '../QuizDetails'
 import * as client from '../client'
-import {Question} from "./QuizQuestions";
-import ReactQuill from 'react-quill';
-import "react-quill/dist/quill.snow.css";
+import { Question } from './QuizQuestions'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
-function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { currQuestion: Question, handleUpdateActiveQuestionId: (id: string | undefined) => void }) {
+function QuestionEditor({
+  currQuestion,
+  handleUpdateActiveQuestionId,
+  questions,
+  handleUpdateQuestion,
+}: {
+  currQuestion: Question
+  handleUpdateActiveQuestionId: (id: string | undefined) => void
+  questions: Question[]
+  handleUpdateQuestion: (question: Question) => void
+}) {
   const [question, setQuestion] = useState({
     _id: currQuestion._id,
     editing: currQuestion.editing,
@@ -27,26 +37,10 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       isCorrect: choice === currQuestion.answer,
     })),
   )
-  const [quiz, setQuiz] = useState<any>({
-    _id: '',
-    title: '',
-    questions: [],
-  })
-
-  const findQuiz = async () => {
-    if (!currQuestion._id) return
-    const response = await client.getQuizByQuestionId(currQuestion._id)
-    setQuiz(response)
-  }
 
   const updateQuiz = async () => {
-    try {
-      const newQuestions = [...quiz[0].questions, question]
-      await client.updateQuiz({ ...quiz[0], questions: newQuestions })
-      handleUpdateActiveQuestionId(undefined)
-    } catch (err: any) {
-      console.log(`Error updating quiz: ${err}`)
-    }
+    handleUpdateQuestion(question)
+    handleUpdateActiveQuestionId(undefined)
   }
 
   const getInstructionalText = () => {
@@ -64,10 +58,13 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
 
   const handleQuestionChange = (e: string) => {
     setQuestion({ ...question, question: e })
-  };
-  
+  }
+
   const addAnswer = () => {
     setAnswers([...answers, { value: '', isCorrect: false }])
+    setQuestion((prevState) => {
+      return { ...prevState, choices: [...prevState.choices, ''] }
+    })
   }
 
   const updateAnswer = (index: number, value: any) => {
@@ -75,6 +72,9 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       idx === index ? { ...answer, value: value } : answer,
     )
     setAnswers(updatedAnswers)
+    setQuestion((prevState) => {
+      return { ...prevState, choices: updatedAnswers.map((a: any) => a.value) }
+    })
   }
 
   const setCorrect = (index: number) => {
@@ -83,15 +83,20 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       isCorrect: idx === index,
     }))
     setAnswers(updatedAnswers)
+    setQuestion((prevState) => {
+      return { ...prevState, answer: updatedAnswers[index].value }
+    })
   }
 
   const removeAnswer = (index: number) => {
-    setAnswers(answers.filter((_: any, idx: number) => idx !== index))
+    setAnswers((prevState) => prevState.filter((_: any, idx: number) => idx !== index))
+    setQuestion((prevState) => {
+      return {
+        ...prevState,
+        choices: prevState.choices.filter((_: any, idx: number) => idx !== index),
+      }
+    })
   }
-
-  useEffect(() => {
-    findQuiz()
-  }, [])
 
   return (
     <div
@@ -105,11 +110,21 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
             className="form-control me-2"
             defaultValue="Question Title"
             style={{ marginRight: '10px' }}
+            value={question.title}
+            onChange={(e) =>
+              setQuestion((prevState) => {
+                return { ...prevState, title: e.target.value }
+              })
+            }
           />
           <select
             className="form-select"
             value={question.type}
-            onChange={(e) => setQuestion({ ...question, type: e.target.value })}
+            onChange={(e) =>
+              setQuestion((prevState) => {
+                return { ...prevState, type: e.target.value }
+              })
+            }
             style={{ width: 'auto' }}
           >
             <option value="multiple-choice">Multiple Choice</option>
@@ -125,7 +140,11 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
             className="form-control"
             style={{ width: '100px' }}
             value={question.points}
-            onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value) })}
+            onChange={(e) =>
+              setQuestion((prevState) => {
+                return { ...prevState, points: parseInt(e.target.value) }
+              })
+            }
             min="0"
           />
         </div>
@@ -136,13 +155,16 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
       </div>
 
       <h5>Question:</h5>
-    
-        <ReactQuill theme="snow" value={question.question} onChange={handleQuestionChange}
-        />
+
+      <ReactQuill
+        theme="snow"
+        value={question.question}
+        onChange={handleQuestionChange}
+      />
 
       <h5 className={'mt-4'}>Answers:</h5>
 
-      {/* {question.type === 'true-false' && (
+      {question.type === 'true-false' && (
         <div className="mb-3">
           <div className="form-check form-check-inline">
             <input
@@ -151,8 +173,12 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
               name="trueFalseAnswer"
               id="trueOption"
               value="True"
-              checked={trueFalseAnswer === 'True'}
-              onChange={() => setTrueFalseAnswer('True')}
+              checked={question.answer === 'True'}
+              onChange={() =>
+                setQuestion((prevState) => {
+                  return { ...prevState, answer: 'True' }
+                })
+              }
             />
             <label className="form-check-label" htmlFor="trueOption">
               True
@@ -165,15 +191,19 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
               name="trueFalseAnswer"
               id="falseOption"
               value="False"
-              checked={trueFalseAnswer === 'False'}
-              onChange={() => setTrueFalseAnswer('False')}
+              checked={question.answer === 'False'}
+              onChange={() =>
+                setQuestion((prevState) => {
+                  return { ...prevState, answer: 'False' }
+                })
+              }
             />
             <label className="form-check-label" htmlFor="falseOption">
               False
             </label>
           </div>
         </div>
-      )} */}
+      )}
 
       {question.type !== 'true-false' &&
         answers.map(
@@ -220,8 +250,8 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
 
       <div className="d-flex justify-content-start mt-3">
         <button
-            className="btn btn-outline-secondary me-2"
-            onClick={() => handleUpdateActiveQuestionId(undefined)}
+          className="btn btn-outline-secondary me-2"
+          onClick={() => handleUpdateActiveQuestionId(undefined)}
         >
           Cancel
         </button>
@@ -233,4 +263,4 @@ function MultipleChoiceEdit({ currQuestion, handleUpdateActiveQuestionId }: { cu
   )
 }
 
-export default MultipleChoiceEdit
+export default QuestionEditor
