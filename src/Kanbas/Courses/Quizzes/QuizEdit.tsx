@@ -1,5 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux'
+import { KanbasState } from '../../store'
+import * as client from './client'
+import {setQuiz, updateQuiz } from './reducer.js'
+import { time } from "console";
+import ReactQuill from 'react-quill';
+import "react-quill/dist/quill.snow.css";
+
 
 type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLSelectElement>;
 
@@ -8,6 +16,11 @@ function QuizEdit(){
     const navigation = useNavigate();
 
     const location = useLocation();
+
+    const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes)
+    const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
+    const dispatch = useDispatch()
+    
     const [titleInputValue, setTitleInputValue] = useState(location.state.quiz.title);
     const [quizType, setQuizType] = useState(location.state.quiz.quizType);
     const [points, setPoints] = useState(location.state.quiz.points);
@@ -24,6 +37,63 @@ function QuizEdit(){
     const [availableDate, setAvailableDate] = useState(location.state.quiz.availableDate);
     const [untilDate, setUntilDate] = useState(location.state.quiz.untilDate);
     const [published, setPublished] = useState(location.state.quiz.published);
+    const [quizInstructions, setQuizInstructions] = useState(location.state.quiz.quizInstructions);
+  
+    const handleUpdatePublish = async () => {
+      const updatedQuiz = {
+        _id: location.state.quiz._id,
+        quizType: quizType, 
+        points: points, 
+        assignmentGroup: assignmentGroup, 
+        shuffleAnswers: shuffleAnswers,
+        timeLimit: timeLimit, 
+        multipleAttempts: multipleAttempts, 
+        showCorrectAnswers: showCorrectAnswers,
+        accessCode:accessCode,
+        oneQuestionAtATime: oneQuestionAtATime,
+        webCamRequired: webCamRequired,
+        lockQuestion: lockQuestion,
+        dueDate: dueDate,
+        availableDate: availableDate,
+        untilDate: untilDate,
+        published: true,
+        title: titleInputValue,
+        questions: location.state.quiz.questions,
+        quizInstructions: quizInstructions
+      };
+      const status = await client.updateQuiz(updatedQuiz);
+      dispatch(updateQuiz(updatedQuiz));
+      navigation(-1);
+
+    };
+  
+    const handleUpdateSave = async () => {
+      const updatedQuiz = {
+        _id: location.state.quiz._id,
+        quizType: quizType, 
+        points: points, 
+        assignmentGroup: assignmentGroup, 
+        shuffleAnswers: shuffleAnswers,
+        timeLimit: timeLimit, 
+        multipleAttempts: multipleAttempts, 
+        showCorrectAnswers: showCorrectAnswers,
+        accessCode:accessCode,
+        oneQuestionAtATime: oneQuestionAtATime,
+        webCamRequired: webCamRequired,
+        lockQuestion: lockQuestion,
+        dueDate: dueDate,
+        availableDate: availableDate,
+        untilDate: untilDate,
+        published: location.state.quiz.published,
+        title: titleInputValue,
+        questions: location.state.quiz.questions,
+        quizInstructions: quizInstructions
+      };
+      const status = await client.updateQuiz(updatedQuiz);
+      dispatch(updateQuiz(updatedQuiz));
+      navigation(-1);
+
+    };
 
     const handleChange = (
       e: InputEvent,
@@ -43,10 +113,14 @@ function QuizEdit(){
       navigation(-1);
     };
 
-    console.log(location);
+
     return (
       <div>
-        Points {location.state.quiz.points}
+        Quiz Instructions       
+        <ReactQuill theme="snow" value={quizInstructions} onChange={setQuizInstructions}
+        />
+        {console.log(quizInstructions)}
+    Points {location.state.quiz.points}
         {console.log(location.state.quiz.points)}
         {location.state.published ? "Published" : "Not Published"}
         <nav className="nav nav-tabs mt-2">
@@ -162,8 +236,8 @@ function QuizEdit(){
     />
 
     <button onClick={handleCancel}>Cancel</button>
-    <button>Save and Publish</button>
-    <button>Save</button>
+    <button onClick={handleUpdatePublish}>Save and Publish</button>
+    <button onClick={handleUpdateSave}>Save</button>
 
       </div>
     );
