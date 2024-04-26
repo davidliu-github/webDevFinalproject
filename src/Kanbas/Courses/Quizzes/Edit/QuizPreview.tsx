@@ -176,25 +176,34 @@ function QuizPreview() {
         </div>
       </div>
       <br />
-      <button
-        className="btn btn-light"
-        style={{
-          border: '1px solid black',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-        }}
+      <Link
+        to={path.substring(0, path.indexOf('/preview')) + '/edit/questions'}
+        style={{ textDecoration: 'none' }}
       >
-        <FaPencilAlt className="me-2" style={{ transform: 'scaleX(-1)' }} />
-        Keep Editing This Quiz
-      </button>
+        <button
+          className="btn btn-light"
+          style={{
+            border: '1px solid black',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }}
+        >
+          <FaPencilAlt className="me-2" style={{ transform: 'scaleX(-1)' }} />
+          Keep Editing This Quiz
+        </button>
+      </Link>
       <br />
       <h3> Questions </h3>
       <ul>
         {questions.map((question, index) => (
           <li key={index} style={{ listStyleType: 'none' }}>
-            <Link to={question.title} style={{ textDecoration: 'none' }}>
+            <Link
+              to={path}
+              style={{ textDecoration: 'none' }}
+              onClick={() => setCurrentQuestionIndex(index)}
+            >
               {question.title}
             </Link>
           </li>
