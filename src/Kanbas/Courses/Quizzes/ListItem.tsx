@@ -46,7 +46,7 @@ const ListItem: React.FC<Quiz> = (props) => {
   const dispatch = useDispatch()
 
   const handlePublish = async () => {
-    const status = await client.updateQuiz(props.quiz)
+    const status = await client.updateQuiz({...props.quiz, published: true})
     dispatch(updateQuiz({...props.quiz, published: true}))
   }
 
