@@ -8,7 +8,9 @@ import {
 } from 'react-icons/fa'
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-
+import * as client from './client'
+import { useDispatch } from 'react-redux'
+import {updateQuiz} from './reducer'
 type QuizTemplate = {
   quizType: string
   points: number
@@ -41,6 +43,12 @@ type Test = {
 
 const ListItem: React.FC<Quiz> = (props) => {
   const { pathname } = useLocation()
+  const dispatch = useDispatch()
+
+  const handlePublish = async () => {
+    const status = await client.updateQuiz(props.quiz)
+    dispatch(updateQuiz({...props.quiz, published: true}))
+  }
 
   const currentDate = new Date()
   console.log('@@@ Current Date: ', currentDate)
@@ -118,7 +126,7 @@ const ListItem: React.FC<Quiz> = (props) => {
             <MenuItem style={{ listStyleType: 'none' }} onClick={props.deleteQuiz}>
               Delete
             </MenuItem>
-            <MenuItem style={{ listStyleType: 'none' }} onClick={props.deleteQuiz}>Publish</MenuItem>
+            <MenuItem style={{ listStyleType: 'none' }} onClick={()=>handlePublish()}>Publish</MenuItem>
           </div>
         </Menu>
       </span>

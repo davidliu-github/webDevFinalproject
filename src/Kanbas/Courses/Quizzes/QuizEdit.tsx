@@ -68,6 +68,9 @@ function QuizEdit() {
         return formattedDate;
     }
 
+    const path = location.pathname
+    const detailsString = path.substring(0, path.indexOf('Quizzes/') + "Quizzes".length)
+
     const handleUpdatePublish = async () => {
         const updatedQuiz = {
             ...retQuiz,
@@ -93,7 +96,7 @@ function QuizEdit() {
         }
         const status = await client.updateQuiz(updatedQuiz)
         dispatch(updateQuiz(updatedQuiz))
-        navigation(-1)
+        navigation(detailsString)
     }
 
     const handleUpdateSave = async () => {
@@ -121,7 +124,7 @@ function QuizEdit() {
         }
         const status = await client.updateQuiz(updatedQuiz)
         dispatch(updateQuiz(updatedQuiz))
-        navigation(-1)
+        navigation(detailsString)
     }
 
     const handleChange = (
@@ -138,9 +141,8 @@ function QuizEdit() {
         setValue(e.target.checked)
     }
     const handleCancel = () => {
-        navigation(-1)
+        navigation(detailsString)
     }
-    const path = location.pathname
     return (
         <div className={"d-flex flex-column me-5"}>
             <div className='editHeader' style={{display: 'flex', justifyContent: 'flex-end'}}>
