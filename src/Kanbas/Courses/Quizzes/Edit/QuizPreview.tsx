@@ -1,19 +1,23 @@
 import React, { useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as client from '../client'
-import { FaPencilAlt, FaCaretRight, FaExclamationCircle } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
-import { KanbasState } from '../../../store'
+import {
+  FaPencilAlt,
+  FaCaretRight,
+  FaExclamationCircle,
+  FaCaretLeft,
+} from 'react-icons/fa'
 
 function QuizPreview() {
   const location = useLocation()
   const path = location.pathname
   console.log('@@@@@@ PATH: ', path)
-  const retQuiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz)
-  console.log('@@@@@ QUIZ: ', retQuiz)
+
   // Will need to find out the path to get the exact title for the preview
-  const quizTitle = retQuiz.title;
-  
+  const quizTitle = path.substring(
+    path.indexOf('/Quizzes/') + 9,
+    path.indexOf('/preview'),
+  )
   console.log('@@@@@@ QUIZ TITLE: ', quizTitle)
   const [questions, setQuestions] = useState<any[]>([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -22,14 +26,14 @@ function QuizPreview() {
 
   // will not set questions because of invalid quiztitle
   const findQuestions = async () => {
-    const response = await client.getQuiz(retQuiz._id)
+    const response = await client.getQuizByTitle(quizTitle)
     console.log('@@@@@@ RESPONSE: ', response)
     setQuestions(response.questions)
   }
 
   React.useEffect(() => {
     findQuestions()
-  }, [])
+  }, [currentQuestionIndex])
 
   const date = new Date(Date.now()).toLocaleString('en-US', {
     year: 'numeric',
@@ -62,51 +66,98 @@ function QuizPreview() {
       <hr />
 
       <div className="question-list">
-        {questions.map((question) => (
-          <div>
-            <ul className="list-group" style={{ border: '1px solid black' }}>
-              <li
-                className="list-group-item"
-                style={{
-                  backgroundColor: 'lightgray',
-                  borderBottom: '1px solid black',
-                }}
-              >
-                <h4 className="question-title">
-                  <span>{question.title}</span>
-                  <span className="question-points" style={{ float: 'right' }}>
-                    {question.points} pts
-                  </span>
-                </h4>
-              </li>
+        {questions.map(
+          (question, index) =>
+            index === currentQuestionIndex && (
+              <div>
+                <ul className="list-group" style={{ border: '1px solid black' }}>
+                  <li
+                    className="list-group-item"
+                    style={{
+                      backgroundColor: 'lightgray',
+                      borderBottom: '1px solid black',
+                    }}
+                  >
+                    <h4 className="question-title">
+                      <span>{question.title}</span>
+                      <span className="question-points" style={{ float: 'right' }}>
+                        {question.points} pts
+                      </span>
+                    </h4>
+                  </li>
 
-              <li className="list-group-item">
-                <span className="question-text">Question: {question.question}</span>{' '}
+                  <li className="list-group-item">
+                    <span className="question-text">Question: {question.question}</span>{' '}
+                    <br />
+                  </li>
+                  {question.type === 'multiple-choice' && (
+                    <li className="list-group-item">
+                      <span className="question-choices">
+                        {question.choices.map((choice: string, index: number) => (
+                          <span key={index}>
+                            <input
+                              type="radio"
+                              name="choice"
+                              value={choice}
+                              className="me-2"
+                            />
+                            <label>{choice}</label>
+                            <hr />
+                          </span>
+                        ))}
+                      </span>{' '}
+                    </li>
+                  )}
+                  {question.type === 'true-false' && (
+                    <li className="list-group-item">
+                      <span className="question-choices">
+                        <input type="radio" name={`question-${index}`} value="true" />
+                        <label>True</label>
+                        <hr />
+                        <input type="radio" name={`question-${index}`} value="false" />
+                        <label>False</label>
+                        <br />
+                      </span>{' '}
+                    </li>
+                  )}
+                  {question.type === 'fill-in-the-blank' && (
+                    <li className="list-group-item">
+                      <span className="question-choices">
+                        <textarea
+                          rows={4}
+                          cols={50}
+                          placeholder="Type your answer here"
+                        ></textarea>
+                      </span>{' '}
+                    </li>
+                  )}
+                </ul>
                 <br />
-              </li>
-
-              <li className="list-group-item">
-                <span className="question-choices">
-                  {question.choices.map((choice: string, index: number) => (
-                    <span key={index}>
-                      {choice} <hr />
-                    </span>
-                  ))}
-                </span>{' '}
-              </li>
-            </ul>
-            <br />
-          </div>
-        ))}
+              </div>
+            ),
+        )}
       </div>
       <br />
-      <button
-        className="btn btn-light"
-        style={{ float: 'right', border: '1px solid black' }}
-      >
-        Next
-        <FaCaretRight />
-      </button>
+      {currentQuestionIndex > 0 && (
+        <button
+          className="btn btn-light"
+          style={{ float: 'left', border: '1px solid black' }}
+          onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
+        >
+          Previous
+          <FaCaretLeft />
+        </button>
+      )}
+      {currentQuestionIndex < questions.length - 1 && (
+        <button
+          className="btn btn-light"
+          style={{ float: 'right', border: '1px solid black' }}
+          onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}
+        >
+          Next
+          <FaCaretRight />
+        </button>
+      )}
       <br />
       <br />
       <div

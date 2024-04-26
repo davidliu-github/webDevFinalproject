@@ -31,18 +31,18 @@ function QuizzesDetails() {
     dispatch(updateQuiz(updatedQuiz))
     setQuiz(updatedQuiz)
   }
-  
+
   function formatDate(x: Date): string {
     // Extract year, month, and day from the Date object
-    const date = new Date(x);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Note: month is zero-based
-    const day = (date.getDate() + 1).toString().padStart(2, '0');
+    const date = new Date(x)
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0') // Note: month is zero-based
+    const day = (date.getDate() + 1).toString().padStart(2, '0')
 
     // Construct the formatted date string
-    const formattedDate = `${year}-${month}-${day}`;
+    const formattedDate = `${year}-${month}-${day}`
 
-    return formattedDate;
+    return formattedDate
   }
 
   const { pathname } = useLocation()
@@ -61,12 +61,17 @@ function QuizzesDetails() {
             {quiz.published ? <FaBan /> : <FaCheckCircle />}
             {quiz.published ? 'Unpublish' : 'Publish'}
           </button>
-          <button className="button btn btn-secondary">
-            <Link to={substringBeforeLastSlash + '/preview'}>Preview</Link>
-          </button>
-          <button className="button btn btn-secondary">
-            <Link to={substringBeforeLastSlash + '/edit'}>Edit</Link>
-          </button>
+          <Link to={substringBeforeLastSlash + '/preview'}>
+            <button
+              className="button btn btn-secondary"
+              // onClick={() => props.setQuiz()}
+            >
+              Preview
+            </button>
+          </Link>
+          <Link to={substringBeforeLastSlash + '/edit'}>
+            <button className="button btn btn-secondary">Edit</button>
+          </Link>
         </div>
         <br />
         <br />
@@ -216,7 +221,9 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex justify-content-start">{formatDate(quiz.dueDate)}</div>
+            <div className="d-flex justify-content-start">
+              {formatDate(quiz.dueDate)}
+            </div>
           </div>
           <div className="col"></div>
         </div>
@@ -238,7 +245,9 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex justify-content-start">{formatDate(quiz.untilDate)}</div>
+            <div className="d-flex justify-content-start">
+              {formatDate(quiz.untilDate)}
+            </div>
           </div>
           <div className="col"></div>
         </div>

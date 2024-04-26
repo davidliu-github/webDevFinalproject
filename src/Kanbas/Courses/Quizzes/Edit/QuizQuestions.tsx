@@ -130,13 +130,6 @@ function QuizQuestions() {
         <Link className="nav-link active" to={path}>
           Questions
         </Link>
-        {/* Temporary Until Details page is set up */}
-        <Link
-          className="nav-link"
-          to={`/${previewPath}/Quizzes/${quizTitle}/QuizPreview`}
-        >
-          Question Preview
-        </Link>
       </nav>
       <div className="question-list">
         {quizState.questions.map((question, index) =>
