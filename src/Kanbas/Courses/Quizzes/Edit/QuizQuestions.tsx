@@ -23,6 +23,7 @@ interface QuizState {
 function QuizQuestions() {
   const location = useLocation()
   const path = location.pathname
+  console.log(path)
   const previewPath = path.substring(path.indexOf('Kanbas/'), path.indexOf('/Quizzes'))
   // console.log('@@@@@@ PREVIEW PATH: ', previewPath)
 
@@ -91,6 +92,21 @@ function QuizQuestions() {
     }
   }
 
+  const saveQuizQuestionsToDBPublish = async () => {
+    try {
+      const response = await client.updateQuizQuestions(
+        quizState.quizId,
+        quizState.questions,
+      )
+      const responsePub = await client.updateQuiz( {...quizState, published: true}
+      )
+      console.log('Updated quiz:', response)
+      console.log('Updated quiz publish:', responsePub)
+    } catch (err: any) {
+      console.log(`Error updating quiz: ${err}`)
+    }
+  }
+
   // should be only call to update DB
   const saveQuizQuestionsToDB = async () => {
     try {
@@ -124,7 +140,7 @@ function QuizQuestions() {
       </span>
       <hr />
       <nav className="nav nav-tabs mt-2">
-        <Link style={{ color: 'red' }} className="nav-link" to="/Quizzes/blank/edit">
+        <Link style={{ color: 'red' }} className="nav-link" to={path.substring(0, path.indexOf('/Quizzes/') + 9) + quizTitle + '/edit'}>
           Details
         </Link>
         <Link className="nav-link active" to={path}>
@@ -143,7 +159,7 @@ function QuizQuestions() {
           ) : (
             <div key={index} className="question" style={{ border: '1px solid black' }}>
               <div className="d-flex justify-content-between align-items-center">
-                <h3 className="ms-2 mt-2">Question</h3>
+                <h3 className="ms-2 mt-2 fw-bold">{question.title}</h3>
                 <div>
                   <button
                     className="btn btn-warning me-2 mt-2"
@@ -159,7 +175,6 @@ function QuizQuestions() {
                   </button>
                 </div>
               </div>
-              <span className="question-title">Title: {question.title}</span> <br />
               <span className="question-text">Question: {question.question}</span>{' '}
               <br />
               <span className="question-type">Type: {question.type}</span> <br />
@@ -192,7 +207,7 @@ function QuizQuestions() {
         >
           Cancel
         </button>
-        <button className="btn btn-outline-secondary" onClick={saveQuizQuestionsToDB}>
+        <button className="btn btn-outline-secondary" onClick={saveQuizQuestionsToDBPublish}>
           Save & Publish
         </button>
         <button className="btn btn-danger" onClick={saveQuizQuestionsToDB}>

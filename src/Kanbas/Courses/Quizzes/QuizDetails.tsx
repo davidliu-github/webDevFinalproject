@@ -234,7 +234,7 @@ function QuizzesDetails() {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex justify-content-start">{quiz.availabilityDate}</div>
+            <div className="d-flex justify-content-start">{formatDate(quiz.availableDate)}</div>
           </div>
           <div className="col"></div>
         </div>

@@ -43,14 +43,18 @@ const ListItem: React.FC<Quiz> = (props) => {
   const { pathname } = useLocation()
 
   const currentDate = new Date()
+  console.log('@@@ Current Date: ', currentDate)
+
   const availableDate1 = new Date(props.quiz.availableDate)
+  console.log('@@@ availableDate1: ', availableDate1)
+  console.log('@@@ status date', currentDate < availableDate1)
   const untilDate1 = new Date(props.quiz.untilDate)
   let availabilityStatus = ''
   let availabilityDate = ''
   if (currentDate < availableDate1) {
     availabilityStatus = `Not available until`
     availabilityDate = availableDate1.toDateString()
-  } else if (currentDate > untilDate1) {
+  } else if (currentDate > availableDate1) {
     availabilityStatus = 'Closed'
   } else if (currentDate >= availableDate1 && currentDate <= untilDate1) {
     availabilityStatus = 'Available'
@@ -70,7 +74,7 @@ const ListItem: React.FC<Quiz> = (props) => {
   const [showPopup, setShowPopup] = React.useState(false)
   const { availableDate, untilDate, dueDate, points, questions, published, title } =
     props.quiz
-  const lenQuestions = questions.length - 1 
+  const lenQuestions = questions.length > 0 ? questions.length - 1 : 0 
   const navigate = useNavigate()
 
   return (
@@ -114,7 +118,7 @@ const ListItem: React.FC<Quiz> = (props) => {
             <MenuItem style={{ listStyleType: 'none' }} onClick={props.deleteQuiz}>
               Delete
             </MenuItem>
-            <MenuItem style={{ listStyleType: 'none' }}>Publish</MenuItem>
+            <MenuItem style={{ listStyleType: 'none' }} onClick={props.deleteQuiz}>Publish</MenuItem>
           </div>
         </Menu>
       </span>
