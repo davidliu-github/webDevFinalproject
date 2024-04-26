@@ -120,15 +120,14 @@ function QuizPreview() {
                       </span>{' '}
                     </li>
                   )}
-                  {question.type === 'fill-in-the-blank' && (
+                  {question.type === 'fill-in-blank' && (
                     <li className="list-group-item">
-                      <span className="question-choices">
-                        <textarea
+
+                        <textarea style={{border: '1px solid black'}}
                           rows={4}
                           cols={50}
                           placeholder="Type your answer here"
                         ></textarea>
-                      </span>{' '}
                     </li>
                   )}
                 </ul>
